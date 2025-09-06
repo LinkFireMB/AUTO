@@ -1,739 +1,1744 @@
 <!DOCTYPE html>
-<html lang="uk" data-theme="dark">
+<html lang="uk" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoTrade.UA - Український авторинок: Купівля, Продаж, Аукціони</title>
+    <title>Автобазар Україна — Купити та Продати Авто</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Палитра "Midnight Blue" */
-            --background: #0A0E1A;
-            --card-bg: #121826;
-            --border-color: #2A3042;
-            --text-primary: #E0E6F0;
-            --text-secondary: #8892B0;
-            --accent: #00A9FF;
-            --accent-hover: #33BAFF;
-            --header-bg: rgba(10, 14, 26, 0.7);
-            --timer-bg: rgba(239, 68, 68, 0.1);
-            --timer-border: rgba(239, 68, 68, 0.3);
-            --timer-text: #FCA5A5;
-            --shadow-color: rgba(0, 169, 255, 0.1);
+            --background: #ffffff;
+            --foreground: #09090b;
+            --card: #ffffff;
+            --card-foreground: #09090b;
+            --popover: #ffffff;
+            --popover-foreground: #09090b;
+            --primary: #18181b;
+            --primary-foreground: #fafafa;
+            --secondary: #f4f4f5;
+            --secondary-foreground: #18181b;
+            --muted: #f4f4f5;
+            --muted-foreground: #71717a;
+            --accent: #f4f4f5;
+            --accent-foreground: #18181b;
+            --destructive: #ef4444;
+            --destructive-foreground: #fafafa;
+            --border: #e4e4e7;
+            --input: #e4e4e7;
+            --ring: #18181b;
         }
 
-        [data-theme="light"] {
-            /* Палитра "Clean Sky" */
-            --background: #F7F8FA;
-            --card-bg: #FFFFFF;
-            --border-color: #E8EBF0;
-            --text-primary: #1E293B;
-            --text-secondary: #64748B;
-            --accent: #2563EB;
-            --accent-hover: #3B82F6;
-            --header-bg: rgba(247, 248, 250, 0.7);
-            --timer-bg: #FEE2E2;
-            --timer-border: #FCA5A5;
-            --timer-text: #DC2626;
-            --shadow-color: rgba(37, 99, 235, 0.1);
+        .dark {
+            --background: #09090b;
+            --foreground: #fafafa;
+            --card: #0c0a09;
+            --card-foreground: #fafafa;
+            --popover: #09090b;
+            --popover-foreground: #fafafa;
+            --primary: #fafafa;
+            --primary-foreground: #18181b;
+            --secondary: #18181b;
+            --secondary-foreground: #fafafa;
+            --muted: #27272a;
+            --muted-foreground: #a1a1aa;
+            --accent: #27272a;
+            --accent-foreground: #fafafa;
+            --destructive: #7f1d1d;
+            --destructive-foreground: #fafafa;
+            --border: #27272a;
+            --input: #27272a;
+            --ring: #fafafa;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--background);
-            color: var(--text-primary);
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        
-        .bg-header { background-color: var(--header-bg); }
-        .bg-card { background-color: var(--card-bg); }
-        .border-default { border-color: var(--border-color); }
-        .text-primary { color: var(--text-primary); }
-        .text-secondary { color: var(--text-secondary); }
-        .text-accent { color: var(--accent); }
-        .hover\:bg-accent:hover { background-color: var(--accent); }
-        .border-accent { border-color: var(--accent); }
-
-        .hero-bg {
-            background-image: linear-gradient(rgba(10, 14, 26, 0.9), rgba(10, 14, 26, 0.9)), url('https://images.unsplash.com/photo-1541348263662-e354936a218d?q=80&w=2071&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
+            color: var(--foreground);
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        .card-bg {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
-        }
-        .card-bg:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px var(--shadow-color);
+        .card {
+            background-color: var(--card);
+            color: var(--card-foreground);
+            border: 1px solid var(--border);
         }
 
         .btn-primary {
-            background: linear-gradient(45deg, var(--accent), var(--accent-hover));
-            color: white;
-            border: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 169, 255, 0.2);
+            background-color: var(--primary);
+            background-image: linear-gradient(to bottom right, var(--primary), hsl(from var(--primary) h s l / 80%));
+            color: var(--primary-foreground);
+            transition: opacity 0.2s, transform 0.1s;
         }
-        [data-theme="light"] .btn-primary {
-             box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
-        }
+        
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 169, 255, 0.35);
-        }
-        [data-theme="light"] .btn-primary:hover {
-             box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+            opacity: 0.9;
         }
 
-        .btn-secondary {
-            background-color: var(--card-bg);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            transition: all 0.2s ease;
+        .btn-primary:active {
+            transform: scale(0.98);
         }
-        .btn-secondary:hover {
-            background-color: var(--border-color);
-            border-color: var(--accent);
-        }
-
-
-        .input-field {
-            background-color: var(--background);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
-        }
-        .input-field:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--shadow-color);
-        }
-        .input-field:disabled {
-            background-color: var(--card-bg);
+        
+        .btn-primary:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
 
-        .timer {
-            background: var(--timer-bg);
-            color: var(--timer-text);
-            border: 1px solid var(--timer-border);
-            text-shadow: 0 0 5px rgba(255, 88, 88, 0.5);
-        }
-        [data-theme="light"] .timer {
-            text-shadow: none;
-        }
-
-        .modal-backdrop {
-            background-color: rgba(10, 14, 26, 0.8);
-            backdrop-filter: blur(5px);
-        }
-        [data-theme="light"] .modal-backdrop {
-            background-color: rgba(247, 248, 250, 0.8);
-        }
-
-        .fade-in {
-            animation: fadeIn 0.3s ease-in-out forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .verified-badge {
-            background-color: rgba(0, 169, 255, 0.1);
-            color: var(--accent-hover);
-            border: 1px solid rgba(0, 169, 255, 0.2);
-        }
-        [data-theme="light"] .verified-badge {
-             background-color: #EFF6FF;
-             color: #1D4ED8;
-             border-color: #DBEAFE;
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: var(--secondary-foreground);
+            border: 1px solid var(--border);
+            transition: background-color 0.2s, transform 0.1s;
         }
         
-        .control-panel select, .control-panel button {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 6px 10px;
-            border-radius: 8px;
-            color: var(--text-secondary);
-            font-weight: 500;
+        .btn-secondary:hover {
+            background-color: var(--accent);
         }
-        .control-panel button svg {
-            stroke: var(--text-secondary);
+
+        .btn-secondary:active {
+            transform: scale(0.98);
+        }
+
+        .input, .select {
+            background-color: var(--background);
+            border: 1px solid var(--input);
+            color: var(--foreground);
+            transition: border-color 0.2s;
         }
         
-        .page {
-            display: none;
+        .input:focus, .select:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            border-color: var(--ring);
         }
-        .page.active {
-            display: block;
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        @keyframes slide {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .hero-bg-lines {
+            background-image:
+                linear-gradient(rgba(128, 128, 128, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(128, 128, 128, 0.15) 1px, transparent 1px);
+            background-size: 4rem 4rem;
+            animation: slide 60s linear infinite;
+            width: 200%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        .thumbnail-active {
+            outline: 2px solid var(--ring);
+            outline-offset: 2px;
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        header.scrolled {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .dark header.scrolled {
+             box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .favorite-btn.favorited svg {
+            fill: #ef4444;
+            stroke: #ef4444;
         }
 
     </style>
 </head>
-<body class="antialiased">
+<body class="min-h-screen flex flex-col">
 
-    <!-- Шапка сайта -->
-    <header class="bg-header backdrop-blur-lg sticky top-0 z-50 border-b border-default">
-        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex items-center">
-                    <a href="#" data-nav="home" class="text-primary text-3xl font-bold tracking-wider">
-                        <span class="text-accent">Auto</span>Trade
-                    </a>
-                </div>
-                <div class="hidden md:flex items-center space-x-8 text-lg font-medium">
-                    <a href="#" data-nav="catalog" class="text-secondary hover:text-primary transition-colors duration-300" data-key="nav_buy">Купити</a>
-                    <a href="#" id="sell-nav-link" class="text-secondary hover:text-primary transition-colors duration-300" data-key="nav_sell">Продати</a>
-                    <a href="#" data-nav="home" data-scroll-to="auctions" class="text-secondary hover:text-primary transition-colors duration-300" data-key="nav_auctions">Аукціони</a>
-                    <a href="#" data-nav="home" data-scroll-to="regions" class="text-secondary hover:text-primary transition-colors duration-300" data-key="nav_regions">Регіони</a>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <div class="control-panel flex items-center space-x-2">
-                         <select id="currencySwitcher" class="text-sm">
-                            <option value="USD">$ USD</option>
-                            <option value="UAH">₴ UAH</option>
-                            <option value="EUR">€ EUR</option>
-                        </select>
-                        <select id="languageSwitcher" class="text-sm">
-                            <option value="uk">УКР</option>
-                            <option value="en">ENG</option>
-                            <option value="ru">РУС</option>
-                        </select>
-                        <button id="themeSwitcher" class="p-2 rounded-lg">
-                             <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-                             <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                        </button>
+    <!-- Header -->
+    <header id="main-header" class="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-300">
+        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2 font-bold text-lg nav-link" data-page="home">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path><circle cx="7" cy="17" r="2"></circle><path d="M9 17h6"></path><circle cx="17" cy="17" r="2"></circle></svg>
+                <span data-translate-key="site_title">АвтоБазар</span>
+            </a>
+            <div class="flex items-center gap-2 sm:gap-4">
+                <select id="language-switcher" class="select text-sm rounded-md h-9 px-2">
+                    <option value="uk">UA</option>
+                    <option value="ru">RU</option>
+                    <option value="en">EN</option>
+                </select>
+
+                <select id="currency-switcher" class="select text-sm rounded-md h-9 px-2">
+                    <option value="UAH">₴ UAH</option>
+                    <option value="USD">$ USD</option>
+                    <option value="EUR">€ EUR</option>
+                </select>
+
+                <button id="theme-toggle" class="btn-secondary h-9 w-9 flex items-center justify-center rounded-md">
+                    <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                    <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 hidden"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+                </button>
+                
+                 <div id="auth-container" class="flex items-center gap-2">
+                    <!-- Logged out state -->
+                    <div id="logged-out-view" class="flex items-center gap-2">
+                        <button id="login-btn" class="btn-secondary rounded-md h-9 px-4 text-sm font-medium" data-translate-key="login">Вхід</button>
+                        <button id="register-btn" class="btn-primary rounded-md h-9 px-4 text-sm font-medium" data-translate-key="register">Реєстрація</button>
                     </div>
-
-                    <button id="loginBtn" class="flex items-center text-primary bg-card border border-default hover:bg-accent hover:text-white transition-all duration-300 px-5 py-2.5 rounded-xl font-semibold">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
-                        <span data-key="login">Увійти</span>
-                    </button>
-                    <div id="userProfile" data-nav="profile" class="hidden items-center space-x-3 cursor-pointer">
-                        <span id="usernameDisplay" class="text-primary font-medium"></span>
-                        <img src="https://i.pravatar.cc/40" alt="Avatar" class="w-10 h-10 rounded-full border-2 border-accent">
+                    
+                    <!-- Logged in state -->
+                    <div id="logged-in-view" class="hidden items-center gap-2">
+                         <button id="add-listing-btn" class="btn-primary rounded-md h-9 px-4 text-sm font-medium nav-link hidden sm:flex" data-page="add">
+                            <span data-translate-key="add_listing">Додати оголошення</span>
+                        </button>
+                        <button class="btn-secondary rounded-md h-9 px-4 text-sm font-medium nav-link" data-page="account">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 sm:mr-2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                             <span class="hidden sm:inline" data-translate-key="my_account">Мій кабінет</span>
+                        </button>
+                        <button id="logout-btn" class="btn-secondary h-9 w-9 flex items-center justify-center rounded-md" data-translate-key="logout_title" title="Вийти">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                        </button>
                     </div>
                 </div>
             </div>
-        </nav>
+        </div>
     </header>
 
-    <main>
-        <!-- СТРАНИЦА: ГЛАВНАЯ -->
-        <div id="home-page" class="page active">
-            <!-- Секция Hero с поиском -->
-            <section class="hero-bg py-28 sm:py-40">
-                <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h1 class="text-white text-4xl sm:text-6xl lg:text-7xl font-extrabold mb-4 leading-tight" data-key="hero_title">Знайди автомобіль своєї мрії</h1>
-                    <p class="text-gray-300 text-lg sm:text-xl max-w-3xl mx-auto mb-10" data-key="hero_subtitle">Найбільша база автомобілів, аукціони та перевірені продавці по всій Україні.</p>
-                    <div class="max-w-4xl mx-auto bg-black/30 backdrop-blur-md p-4 sm:p-6 rounded-2xl border border-gray-800">
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                            <select id="search-region-select" class="w-full p-3 input-field rounded-lg">
-                                <option value="" data-key="search_region_all">Вся Україна</option>
-                            </select>
-                            <select id="search-brand-select" class="w-full p-3 input-field rounded-lg">
-                                <option value="" data-key="search_brand">Марка</option>
-                            </select>
-                            <select id="search-model-select" class="w-full p-3 input-field rounded-lg" disabled>
-                                <option value="" data-key="search_model_select">Модель</option>
-                            </select>
-                            <button id="search-button" class="w-full btn-primary text-white font-bold py-3 px-6 rounded-lg text-lg" data-key="search_button">
-                                Пошук
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
+    <!-- Main Content -->
+    <main class="flex-grow">
 
-            <!-- Секция "Гарячі пропозиції" -->
-            <section id="featured" class="py-20 sm:py-24">
-                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 class="text-4xl sm:text-5xl font-bold text-primary mb-12 text-center" data-key="featured_title">Гарячі пропозиції</h2>
-                    <div id="featured-cars-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    </div>
+        <!-- Home Page (Listings) -->
+        <div id="home-page" class="page">
+            <!-- Hero Section -->
+            <section class="relative text-center py-16 sm:py-24 bg-secondary border-b border-border overflow-hidden">
+                <div class="hero-bg-lines"></div>
+                <div class="container mx-auto px-4 relative z-10">
+                    <h1 class="text-4xl sm:text-5xl font-bold tracking-tight animate-on-scroll" data-translate-key="hero_title">Знайдіть автомобіль своєї мрії</h1>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground animate-on-scroll" data-translate-key="hero_subtitle">Найбільший вибір вживаних авто в Україні. Швидко, зручно та безпечно.</p>
                 </div>
             </section>
             
-            <!-- Секция "Live Аукціони" -->
-            <section id="auctions" class="py-20 sm:py-24 bg-card/20">
-                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 class="text-4xl sm:text-5xl font-bold text-primary mb-12 text-center" data-key="auctions_title">Live Аукціони</h2>
-                    <div id="auction-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+             <!-- Stats Section -->
+            <section id="stats-section" class="py-12 bg-background border-b border-border">
+                <div class="container mx-auto px-4">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                        <div class="animate-on-scroll">
+                            <h3 class="text-3xl font-bold stat-counter" data-target="12000">0</h3>
+                            <p class="text-muted-foreground" data-translate-key="stat_listings">Оголошень</p>
+                        </div>
+                        <div class="animate-on-scroll">
+                            <h3 class="text-3xl font-bold stat-counter" data-target="8500">0</h3>
+                            <p class="text-muted-foreground" data-translate-key="stat_sold">Продано авто</p>
+                        </div>
+                        <div class="animate-on-scroll">
+                            <h3 class="text-3xl font-bold stat-counter" data-target="25000">0</h3>
+                            <p class="text-muted-foreground" data-translate-key="stat_users">Користувачів</p>
+                        </div>
+                         <div class="animate-on-scroll">
+                            <h3 class="text-3xl font-bold stat-counter" data-target="200">0</h3>
+                            <p class="text-muted-foreground" data-translate-key="stat_brands">Марок авто</p>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Секция регионов -->
-            <section id="regions" class="py-20 sm:py-24">
-                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                     <h2 class="text-4xl sm:text-5xl font-bold text-primary mb-12 text-center" data-key="regions_title">Пошук по регіонах</h2>
-                     <div id="regions-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                     </div>
+            <div class="container mx-auto p-4">
+
+                <!-- Popular Brands Section -->
+                 <section id="popular-brands-section" class="my-12 animate-on-scroll">
+                    <h2 class="text-2xl font-bold text-center mb-6" data-translate-key="popular_brands">Популярні марки</h2>
+                    <div id="popular-brands-grid" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4">
+                        <!-- Brands will be injected here -->
+                    </div>
+                </section>
+                
+                <!-- Filters -->
+                <div class="card p-4 rounded-md mb-8 sticky top-[65px] z-40 shadow-lg bg-background/95 backdrop-blur-sm animate-on-scroll">
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                        <div>
+                            <label for="filter-make" class="text-sm font-medium text-muted-foreground" data-translate-key="filter_make">Марка</label>
+                            <select id="filter-make" class="select w-full mt-1 rounded-md p-2">
+                                <option value="" data-translate-key="any_make">Будь-яка</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="filter-model" class="text-sm font-medium text-muted-foreground" data-translate-key="filter_model">Модель</label>
+                            <select id="filter-model" class="select w-full mt-1 rounded-md p-2" disabled>
+                                <option value="" data-translate-key="any_model">Будь-яка</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="filter-region" class="text-sm font-medium text-muted-foreground" data-translate-key="filter_region">Область</label>
+                            <select id="filter-region" class="select w-full mt-1 rounded-md p-2">
+                                 <option value="" data-translate-key="any_region">Будь-яка</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="sort-by" class="text-sm font-medium text-muted-foreground" data-translate-key="sort_by">Сортувати за</label>
+                            <select id="sort-by" class="select w-full mt-1 rounded-md p-2">
+                                 <option value="newest" data-translate-key="sort_newest">Новизною</option>
+                                 <option value="price_asc" data-translate-key="sort_price_asc">Ціною: від дешевих</option>
+                                 <option value="price_desc" data-translate-key="sort_price_desc">Ціною: від дорогих</option>
+                                 <option value="mileage_asc" data-translate-key="sort_mileage_asc">Пробігом: по зростанню</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button id="reset-filters-btn" class="btn-secondary w-full h-10 rounded-md" data-translate-key="reset_filters">Скинути</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Featured Listings Section -->
+                <section id="featured-listings-section" class="mb-12 animate-on-scroll">
+                    <h2 class="text-2xl font-bold mb-4" data-translate-key="featured_listings">Рекомендовані оголошення</h2>
+                    <div class="relative">
+                        <div id="featured-listings-grid" class="flex gap-6 overflow-x-auto pb-4 no-scrollbar">
+                           <!-- Featured car cards will be injected here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Listings Grid -->
+                <div id="listings-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 animate-on-scroll">
+                    <!-- Car cards will be injected here -->
+                </div>
+                 <!-- Pagination -->
+                <div id="pagination-controls" class="flex justify-center items-center gap-2 mt-8 animate-on-scroll">
+                    <!-- Pagination buttons will be injected here -->
+                </div>
+                <div id="loader" class="text-center py-10">
+                    <p data-translate-key="loading">Завантаження оголошень...</p>
+                </div>
+                <div id="no-results" class="hidden text-center py-10">
+                    <p data-translate-key="no_results">Оголошень не знайдено. Спробуйте змінити фільтри.</p>
+                </div>
+            </div>
+
+             <!-- Why Choose Us Section -->
+            <section class="bg-secondary py-16 mt-12 border-t border-border">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-3xl font-bold text-center mb-8 animate-on-scroll" data-translate-key="why_choose_us">Чому обирають нас?</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                        <div class="p-6 animate-on-scroll">
+                            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-primary-foreground mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                            </div>
+                            <h3 class="text-xl font-semibold" data-translate-key="benefit_1_title">Найбільший вибір</h3>
+                            <p class="mt-2 text-muted-foreground" data-translate-key="benefit_1_desc">Тисячі перевірених автомобілів з усієї України.</p>
+                        </div>
+                        <div class="p-6 animate-on-scroll">
+                             <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-primary-foreground mx-auto mb-4">
+                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                            </div>
+                            <h3 class="text-xl font-semibold" data-translate-key="benefit_2_title">Зручний пошук</h3>
+                            <p class="mt-2 text-muted-foreground" data-translate-key="benefit_2_desc">Прості та потужні фільтри для швидкого пошуку.</p>
+                        </div>
+                        <div class="p-6 animate-on-scroll">
+                            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-primary-foreground mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </div>
+                            <h3 class="text-xl font-semibold" data-translate-key="benefit_3_title">Надійні продавці</h3>
+                            <p class="mt-2 text-muted-foreground" data-translate-key="benefit_3_desc">Система верифікації для вашої безпеки.</p>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
 
-        <!-- СТРАНИЦА: КАТАЛОГ -->
-        <div id="catalog-page" class="page">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <h2 class="text-4xl sm:text-5xl font-bold text-primary mb-12 text-center" data-key="catalog_title">Пошук автомобілів</h2>
-                <div class="flex flex-col lg:flex-row gap-8">
-                    <!-- Фильтры -->
-                    <aside class="lg:w-1/4">
-                        <div class="card-bg p-6 rounded-xl sticky top-28">
-                            <h3 class="text-xl font-bold mb-4" data-key="filters_title">Фільтри</h3>
-                            <div id="filters-form" class="space-y-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-secondary mb-1" data-key="filter_price">Ціна, USD</label>
-                                    <div class="flex items-center gap-2">
-                                        <input id="price-from" type="number" placeholder="Від" class="w-full p-2 input-field rounded-md">
-                                        <input id="price-to" type="number" placeholder="До" class="w-full p-2 input-field rounded-md">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-secondary mb-1" data-key="filter_year">Рік випуску</label>
-                                    <div class="flex items-center gap-2">
-                                        <input id="year-from" type="number" placeholder="Від" class="w-full p-2 input-field rounded-md">
-                                        <input id="year-to" type="number" placeholder="До" class="w-full p-2 input-field rounded-md">
-                                    </div>
-                                </div>
-                                <button id="apply-filters-btn" class="w-full btn-primary text-white font-bold py-2.5 rounded-lg" data-key="apply_filters">Застосувати</button>
+        <!-- Add Listing Page -->
+        <div id="add-page" class="page hidden">
+             <div class="container mx-auto p-4">
+                <div class="max-w-2xl mx-auto">
+                    <h1 id="add-edit-title" class="text-3xl font-bold mb-6" data-translate-key="new_listing_title">Нове оголошення</h1>
+                    <form id="add-listing-form" class="card p-6 rounded-md space-y-4">
+                        <input type="hidden" id="form-edit-id">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="form-make" class="block text-sm font-medium text-muted-foreground" data-translate-key="form_make">Марка*</label>
+                                <select id="form-make" class="select w-full mt-1 rounded-md p-2" required>
+                                     <option value="" data-translate-key="select_make" disabled selected>Оберіть марку</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="form-model" class="block text-sm font-medium text-muted-foreground" data-translate-key="form_model">Модель*</label>
+                                <select id="form-model" class="select w-full mt-1 rounded-md p-2" required disabled>
+                                    <option value="" data-translate-key="select_model" disabled selected>Спочатку оберіть марку</option>
+                                </select>
                             </div>
                         </div>
-                    </aside>
-                    <!-- Результаты -->
-                    <div class="lg:w-3/4">
-                        <div id="catalog-cars-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                            <!-- Карточки авто будут здесь -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                 <label for="form-year" class="block text-sm font-medium text-muted-foreground" data-translate-key="form_year">Рік випуску*</label>
+                                 <input type="number" id="form-year" min="1950" :max="new Date().getFullYear() + 1" class="input w-full mt-1 rounded-md p-2" required>
+                            </div>
+                            <div>
+                                 <label for="form-price" class="block text-sm font-medium text-muted-foreground" data-translate-key="form_price">Ціна (в UAH)*</label>
+                                 <input type="number" id="form-price" min="1" class="input w-full mt-1 rounded-md p-2" required>
+                            </div>
                         </div>
-                    </div>
+                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                 <label for="form-mileage" class="block text-sm font-medium text-muted-foreground" data-translate-key="form_mileage">Пробіг (тис. км)*</label>
+                                 <input type="number" id="form-mileage" min="0" class="input w-full mt-1 rounded-md p-2" required>
+                            </div>
+                            <div>
+                                <label for="form-fuel" class="block text-sm font-medium text-muted-foreground" data-translate-key="form_fuel">Паливо*</label>
+                                <select id="form-fuel" class="select w-full mt-1 rounded-md p-2" required></select>
+                            </div>
+                        </div>
+                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="form-transmission" class="block text-sm font-medium text-muted-foreground" data-translate-key="form_transmission">Коробка передач*</label>
+                                <select id="form-transmission" class="select w-full mt-1 rounded-md p-2" required></select>
+                            </div>
+                            <div>
+                                <label for="form-body" class="block text-sm font-medium text-muted-foreground" data-translate-key="form_body">Тип кузова*</label>
+                                <select id="form-body" class="select w-full mt-1 rounded-md p-2" required></select>
+                            </div>
+                        </div>
+                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="form-owners" class="block text-sm font-medium text-muted-foreground" data-translate-key="form_owners">Кількість власників*</label>
+                                <input type="number" id="form-owners" min="1" class="input w-full mt-1 rounded-md p-2" required>
+                            </div>
+                            <div>
+                                <label for="form-accidents" class="block text-sm font-medium text-muted-foreground" data-translate-key="form_accidents">Участь у ДТП*</label>
+                                <select id="form-accidents" class="select w-full mt-1 rounded-md p-2" required>
+                                    <option value="false" data-translate-key="option_no_accidents">Не був у ДТП</option>
+                                    <option value="true" data-translate-key="option_accidents">Був у ДТП</option>
+                                </select>
+                            </div>
+                        </div>
+                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="form-region" class="block text-sm font-medium text-muted-foreground" data-translate-key="form_region">Область*</label>
+                                <select id="form-region" class="select w-full mt-1 rounded-md p-2" required>
+                                    <option value="" data-translate-key="select_region" disabled selected>Оберіть область</option>
+                                </select>
+                            </div>
+                            <div>
+                                 <label for="form-city" class="block text-sm font-medium text-muted-foreground" data-translate-key="form_city">Місто*</label>
+                                 <input type="text" id="form-city" class="input w-full mt-1 rounded-md p-2" required>
+                            </div>
+                        </div>
+                         <div>
+                            <label for="form-vin" class="block text-sm font-medium text-muted-foreground">VIN-код</label>
+                            <input type="text" id="form-vin" class="input w-full mt-1 rounded-md p-2" maxlength="17" placeholder="e.g. WBA123456789ABCDE">
+                        </div>
+                        <div>
+                            <label for="form-image" class="block text-sm font-medium text-muted-foreground" data-translate-key="form_image">URL фото (основне)</label>
+                            <input type="url" id="form-image" class="input w-full mt-1 rounded-md p-2" placeholder="https://example.com/image.jpg">
+                        </div>
+                         <div>
+                            <label for="form-gallery-images" class="block text-sm font-medium text-muted-foreground" data-translate-key="form_gallery_images">URL фото для галереї (через кому)</label>
+                            <textarea id="form-gallery-images" rows="2" class="input w-full mt-1 rounded-md p-2" placeholder="https://.../img1.jpg, https://.../img2.jpg"></textarea>
+                        </div>
+                        <div>
+                            <label for="form-description" class="block text-sm font-medium text-muted-foreground" data-translate-key="form_description">Опис</label>
+                            <textarea id="form-description" rows="4" class="input w-full mt-1 rounded-md p-2"></textarea>
+                        </div>
+                        <button type="submit" id="form-submit-btn" class="btn-primary w-full h-10 rounded-md font-semibold">
+                            <span data-translate-key="submit_listing">Опублікувати</span>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
-
-        <!-- СТРАНИЦА: ПРОФИЛЬ -->
-        <div id="profile-page" class="page">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <div class="card-bg p-8 rounded-2xl mb-12 flex flex-col sm:flex-row items-center gap-8">
-                    <img src="https://i.pravatar.cc/100" alt="Avatar" class="w-24 h-24 rounded-full border-4 border-accent">
-                    <div class="flex-grow text-center sm:text-left">
-                        <h2 id="profile-name" class="text-3xl font-bold text-primary"></h2>
-                        <p id="profile-email" class="text-secondary"></p>
-                    </div>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <button class="btn-secondary font-semibold py-2 px-5 rounded-lg flex items-center justify-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                                <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
-                            </svg>
-                            <span data-key="edit_profile">Редагувати</span>
-                        </button>
-                        <button id="logout-btn" class="btn-primary font-semibold py-2 px-5 rounded-lg flex items-center justify-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
-                            </svg>
-                           <span data-key="logout">Вийти</span>
-                        </button>
-                    </div>
-                </div>
-
-                <h3 class="text-3xl font-bold text-primary mb-8" data-key="my_ads_title">Мої оголошення</h3>
-                <div id="my-ads-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    <!-- Карточки авто пользователя будут здесь -->
-                </div>
+        
+        <!-- My Account Page -->
+        <div id="account-page" class="page hidden">
+            <div class="container mx-auto p-4">
+                 <h1 class="text-3xl font-bold mb-6" data-translate-key="my_account">Мій кабінет</h1>
+                 <div id="account-tabs" class="mb-6 border-b border-border">
+                     <nav class="flex space-x-4" aria-label="Tabs">
+                         <button data-tab="my-listings" class="account-tab whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-primary text-primary" data-translate-key="my_listings_tab">Мої оголошення</button>
+                         <button data-tab="my-favorites" class="account-tab whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-muted-foreground hover:text-foreground hover:border-border" data-translate-key="my_favorites_tab">Вибрані оголошення</button>
+                     </nav>
+                 </div>
+                 
+                 <div id="my-listings-tab-content" class="account-tab-content">
+                     <!-- My listings will be injected here -->
+                 </div>
+                 
+                 <div id="my-favorites-tab-content" class="account-tab-content hidden">
+                     <!-- My favorites will be injected here -->
+                 </div>
             </div>
         </div>
 
     </main>
-    
-    <footer class="bg-card border-t border-default">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
-            <div class="text-center text-secondary">
-                <p data-key="footer_copyright">&copy; 2025 AutoTrade.UA. Всі права захищено.</p>
+
+    <!-- Footer -->
+    <footer class="bg-secondary border-t border-border mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="font-semibold" data-translate-key="site_title">АвтоБазар</h3>
+                    <p class="text-sm text-muted-foreground mt-2" data-translate-key="footer_promo">© 2025. Всі права захищено.</p>
+                </div>
+                <div>
+                    <h3 class="font-semibold" data-translate-key="footer_nav">Навігація</h3>
+                    <ul class="mt-2 space-y-1 text-sm text-muted-foreground">
+                        <li><a href="#" class="hover:text-foreground nav-link" data-page="home" data-translate-key="footer_home">Головна</a></li>
+                        <li><a href="#" class="hover:text-foreground nav-link" data-page="add" data-translate-key="add_listing">Додати оголошення</a></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h3 class="font-semibold" data-translate-key="footer_about">Про нас</h3>
+                    <ul class="mt-2 space-y-1 text-sm text-muted-foreground">
+                        <li><a href="#" class="hover:text-foreground" data-translate-key="footer_company">Компанія</a></li>
+                        <li><a href="#" class="hover:text-foreground" data-translate-key="footer_contact">Контакти</a></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h3 class="font-semibold" data-translate-key="footer_legal">Правова інформація</h3>
+                    <ul class="mt-2 space-y-1 text-sm text-muted-foreground">
+                        <li><a href="#" class="hover:text-foreground" data-translate-key="footer_terms">Умови використання</a></li>
+                        <li><a href="#" class="hover:text-foreground" data-translate-key="footer_privacy">Політика конфіденційності</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </footer>
-
-    <!-- Модальные окна -->
-    <div id="loginModal" class="fixed inset-0 z-50 items-center justify-center hidden modal-backdrop fade-in">
-        <div class="card-bg w-full max-w-md p-8 rounded-2xl shadow-2xl relative">
-            <button id="closeLoginModal" class="absolute top-4 right-4 text-secondary hover:text-primary text-3xl">&times;</button>
-            <h2 class="text-3xl font-bold text-primary text-center mb-6" data-key="login_title">Вхід до профілю</h2>
-            <form id="loginForm">
-                <div class="mb-4">
-                    <label for="email" class="block text-sm font-medium text-secondary mb-2">Email</label>
-                    <input type="email" id="email" class="w-full p-3 input-field rounded-lg" placeholder="your@email.com" required>
+    
+    <!-- Modals -->
+    <div id="details-modal" class="fixed inset-0 bg-black/60 z-[100] hidden items-center justify-center p-4">
+        <div id="details-modal-content" class="card rounded-md max-w-4xl w-full max-h-[90vh] overflow-y-auto no-scrollbar relative transform transition-all opacity-0 scale-95"></div>
+    </div>
+    
+     <div id="vin-report-modal" class="fixed inset-0 bg-black/60 z-[101] hidden items-center justify-center p-4">
+        <div class="card rounded-md max-w-2xl w-full relative p-6 transform transition-all opacity-0 scale-95">
+            <button class="close-modal-btn absolute top-3 right-4 text-muted-foreground hover:text-foreground text-3xl font-bold">&times;</button>
+            <h2 class="text-xl font-bold mb-4" data-translate-key="vin_report_title">Звіт по VIN-коду</h2>
+            <div id="vin-report-content" class="space-y-4 text-sm">
+                <!-- VIN report content will be injected here -->
+            </div>
+        </div>
+    </div>
+    
+    <div id="login-modal" class="fixed inset-0 bg-black/60 z-[100] hidden items-center justify-center p-4">
+        <div class="card rounded-md max-w-sm w-full relative p-6 transform transition-all opacity-0 scale-95">
+            <button class="close-modal-btn absolute top-3 right-4 text-muted-foreground hover:text-foreground text-3xl font-bold">&times;</button>
+            <div class="text-center mb-4">
+                <h2 class="text-xl font-bold" data-translate-key="login_title">Вхід в акаунт</h2>
+                <p class="text-sm text-muted-foreground" data-translate-key="login_subtitle">Ласкаво просимо!</p>
+            </div>
+             <div class="space-y-3 mt-6">
+                <button class="btn-secondary w-full h-10 rounded-md font-semibold flex items-center justify-center gap-2" disabled><span id="google-icon"></span><span data-translate-key="continue_google">Продовжити з Google</span></button>
+                <button class="btn-secondary w-full h-10 rounded-md font-semibold flex items-center justify-center gap-2" disabled><span id="facebook-icon"></span><span data-translate-key="continue_facebook">Продовжити з Facebook</span></button>
+            </div>
+            <div class="relative my-4 flex items-center">
+                <div class="flex-grow border-t border-border"></div>
+                <span class="flex-shrink mx-4 text-xs text-muted-foreground uppercase" data-translate-key="or_continue_with">Або</span>
+                <div class="flex-grow border-t border-border"></div>
+            </div>
+            <form id="login-form">
+                <div class="space-y-4">
+                    <div>
+                        <label for="login-email" class="block text-sm font-medium text-muted-foreground">Email</label>
+                        <input type="email" id="login-email" class="input w-full mt-1 rounded-md p-2" required autocomplete="email">
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center">
+                            <label for="login-password" class="block text-sm font-medium text-muted-foreground" data-translate-key="password">Пароль</label>
+                            <a href="#" class="text-xs text-primary/80 hover:underline" data-translate-key="forgot_password">Забули пароль?</a>
+                        </div>
+                        <div class="relative">
+                            <input type="password" id="login-password" class="input w-full mt-1 rounded-md p-2 pr-10" required autocomplete="current-password">
+                             <button type="button" class="password-toggle absolute inset-y-0 right-0 px-3 flex items-center text-muted-foreground">
+                                <span class="eye-open"></span>
+                                <span class="eye-closed hidden"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <p id="login-error" class="text-sm text-red-500 hidden"></p>
+                    <button type="submit" class="btn-primary w-full h-10 rounded-md font-semibold" data-translate-key="login">Вхід</button>
                 </div>
-                <div class="mb-6">
-                    <label for="password" class="block text-sm font-medium text-secondary mb-2" data-key="login_password">Пароль</label>
-                    <input type="password" id="password" class="w-full p-3 input-field rounded-lg" placeholder="••••••••" required>
-                </div>
-                <button type="submit" class="w-full btn-primary text-white font-bold py-3 rounded-lg text-lg" data-key="login_button">Увійти</button>
             </form>
-            <p class="text-center text-secondary mt-4 text-sm"><span data-key="login_no_account">Немає акаунту?</span> <a href="#" class="text-accent hover:underline" data-key="login_register">Зареєструватись</a></p>
+             <p class="mt-4 text-center text-sm text-muted-foreground">
+                <span data-translate-key="no_account">Немає акаунту?</span>
+                <a href="#" id="show-register-modal" class="font-semibold text-primary/90 hover:underline" data-translate-key="register">Зареєструйтесь</a>
+            </p>
         </div>
     </div>
     
-    <div id="bidModal" class="fixed inset-0 z-50 items-center justify-center hidden modal-backdrop fade-in">
-         <div class="card-bg w-full max-w-md p-8 rounded-2xl shadow-2xl relative">
-             <button id="closeBidModal" class="absolute top-4 right-4 text-secondary hover:text-primary text-3xl">&times;</button>
-             <h2 class="text-3xl font-bold text-primary text-center mb-2" data-key="bid_title">Зробити ставку</h2>
-             <p id="bidCarName" class="text-center text-primary mb-4 text-lg"></p>
-             <p class="text-center text-secondary text-sm"><span data-key="bid_current">Поточна ставка:</span> <span id="currentBid" class="font-bold text-2xl text-primary"></span></p>
-             <form id="bidForm">
-                 <div class="my-6">
-                     <label for="bidAmount" class="block text-sm font-medium text-secondary mb-2" data-key="bid_your_bid">Ваша ставка</label>
-                     <input type="number" id="bidAmount" name="bidAmount" class="w-full p-3 input-field rounded-lg text-xl" data-key-placeholder="bid_placeholder" placeholder="Наприклад, 76000" required>
-                 </div>
-                 <button type="submit" class="w-full btn-primary text-white font-bold py-3 rounded-lg text-lg" data-key="bid_confirm">Підтвердити ставку</button>
-             </form>
-         </div>
-    </div>
-
-    <div id="sellModal" class="fixed inset-0 z-50 items-center justify-center hidden modal-backdrop fade-in">
-        <div class="card-bg w-full max-w-md p-8 rounded-2xl shadow-2xl relative text-center">
-            <button id="closeSellModal" class="absolute top-4 right-4 text-secondary hover:text-primary text-3xl">&times;</button>
-            <h2 class="text-3xl font-bold text-primary text-center mb-4" data-key="sell_modal_title">Продаж авто</h2>
-            <p class="text-secondary" data-key="sell_modal_text">Функція додавання оголошення незабаром буде доступна. Ми працюємо над цим!</p>
+    <div id="register-modal" class="fixed inset-0 bg-black/60 z-[100] hidden items-center justify-center p-4">
+        <div class="card rounded-md max-w-sm w-full relative p-6 transform transition-all opacity-0 scale-95">
+            <button class="close-modal-btn absolute top-3 right-4 text-muted-foreground hover:text-foreground text-3xl font-bold">&times;</button>
+             <div class="text-center mb-4">
+                <h2 class="text-xl font-bold" data-translate-key="register_title">Створення акаунту</h2>
+                <p class="text-sm text-muted-foreground" data-translate-key="register_subtitle">Приєднуйтесь до нас!</p>
+            </div>
+            <form id="register-form">
+                 <div class="space-y-4">
+                    <div>
+                        <label for="register-name" class="block text-sm font-medium text-muted-foreground" data-translate-key="form_name">Ім'я</label>
+                        <input type="text" id="register-name" class="input w-full mt-1 rounded-md p-2" required>
+                    </div>
+                    <div>
+                        <label for="register-email" class="block text-sm font-medium text-muted-foreground">Email</label>
+                        <input type="email" id="register-email" class="input w-full mt-1 rounded-md p-2" required autocomplete="email">
+                    </div>
+                    <div>
+                        <label for="register-password" class="block text-sm font-medium text-muted-foreground" data-translate-key="password">Пароль</label>
+                         <div class="relative">
+                            <input type="password" id="register-password" class="input w-full mt-1 rounded-md p-2 pr-10" required minlength="6" autocomplete="new-password">
+                            <button type="button" class="password-toggle absolute inset-y-0 right-0 px-3 flex items-center text-muted-foreground">
+                                <span class="eye-open"></span>
+                                <span class="eye-closed hidden"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <p id="register-error" class="text-sm text-red-500 hidden"></p>
+                    <button type="submit" class="btn-primary w-full h-10 rounded-md font-semibold" data-translate-key="register">Реєстрація</button>
+                </div>
+            </form>
+            <p class="mt-4 text-center text-sm text-muted-foreground">
+                <span data-translate-key="has_account">Вже є акаунт?</span>
+                <a href="#" id="show-login-modal" class="font-semibold text-primary/90 hover:underline" data-translate-key="login">Увійдіть</a>
+            </p>
         </div>
     </div>
 
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-
-    // --- ДАННЫЕ (симуляция базы данных) ---
-    const exchangeRates = { USD: 1, UAH: 40.85, EUR: 0.93 };
-    const currencySymbols = { USD: '$', UAH: '₴', EUR: '€' };
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-green-500 text-white py-2 px-4 rounded-md shadow-lg opacity-0 transform translate-y-10 transition-all duration-300">
+        <p id="toast-message"></p>
+    </div>
     
-    const allCars = [
-        { id: 1, name: 'BMW M5 Competition', owner: 'test@example.com', brand: 'BMW', model: 'M5', region: 'Київська', year: 2021, priceUSD: 95000, image: 'https://images.unsplash.com/photo-1616421233882-d594a12a5259?q=80&w=2070&auto=format&fit=crop', verified: true, specs: { engine: '4.4L V8', power: '625 к.с.', transmission: 'Автомат', mileage: '25 тис. км' } },
-        { id: 2, name: 'Audi RS6 Avant', owner: 'another@user.com', brand: 'Audi', model: 'RS6', region: 'Львівська', year: 2022, priceUSD: 115000, image: 'https://images.unsplash.com/photo-1604009522045-535d03a1f496?q=80&w=2070&auto=format&fit=crop', verified: true, specs: { engine: '4.0L V8', power: '600 к.с.', transmission: 'Автомат', mileage: '15 тис. км' } },
-        { id: 3, name: 'Volkswagen Golf GTI', owner: 'another@user.com', brand: 'Volkswagen', model: 'Golf', region: 'Одеська', year: 2020, priceUSD: 28500, image: 'https://images.unsplash.com/photo-1621007958821-39e83c4f74b6?q=80&w=2070&auto=format&fit=crop', verified: false, specs: { engine: '2.0L I4', power: '245 к.с.', transmission: 'Автомат', mileage: '55 тис. км' } },
-        { id: 4, name: 'Toyota Land Cruiser 300', owner: 'test@example.com', brand: 'Toyota', model: 'Land Cruiser', region: 'Дніпропетровська', year: 2023, priceUSD: 98000, image: 'https://images.unsplash.com/photo-1634993022513-31201533b3e7?q=80&w=1964&auto=format&fit=crop', verified: true, specs: { engine: '3.5L V6', power: '415 к.с.', transmission: 'Автомат', mileage: '5 тис. км' } },
-        { id: 8, name: 'Lexus RX 350', owner: 'another@user.com', brand: 'Lexus', model: 'RX', region: 'Київська', year: 2022, priceUSD: 62000, image: 'https://images.unsplash.com/photo-1621775334795-3d52f67a21b3?q=80&w=2070&auto=format&fit=crop', verified: true, specs: { engine: '3.5L V6', power: '295 к.с.', transmission: 'Автомат', mileage: '30 тис. км' } },
-        { id: 9, name: 'Skoda Octavia A8', owner: 'test@example.com', brand: 'Skoda', model: 'Octavia', region: 'Львівська', year: 2021, priceUSD: 24000, image: 'https://images.unsplash.com/photo-1631248055158-38e1b37347a3?q=80&w=2070&auto=format&fit=crop', verified: false, specs: { engine: '2.0L TDI', power: '150 к.с.', transmission: 'Автомат', mileage: '60 тис. км' } },
-        { id: 10, name: 'Renault Megane', owner: 'another@user.com', brand: 'Renault', model: 'Megane', region: 'Харківська', year: 2019, priceUSD: 16500, image: 'https://images.unsplash.com/photo-1558980992-4c20b88a820c?q=80&w=2070&auto=format&fit=crop', verified: true, specs: { engine: '1.5L DCI', power: '115 к.с.', transmission: 'Робот', mileage: '95 тис. км' } },
-        { id: 11, name: 'Hyundai Tucson', owner: 'test@example.com', brand: 'Hyundai', model: 'Tucson', region: 'Одеська', year: 2022, priceUSD: 31000, image: 'https://images.unsplash.com/photo-1632863588261-0d32de7f3227?q=80&w=2070&auto=format&fit=crop', verified: true, specs: { engine: '1.6L T-GDI', power: '180 к.с.', transmission: 'Автомат', mileage: '22 тис. км' } },
-        { id: 12, name: 'Toyota Camry', owner: 'another@user.com', brand: 'Toyota', model: 'Camry', region: 'Київська', year: 2021, priceUSD: 33000, image: 'https://images.unsplash.com/photo-1621007958749-d01c18d09a09?q=80&w=2070&auto=format&fit=crop', verified: true, specs: { engine: '2.5L I4', power: '206 к.с.', transmission: 'Автомат', mileage: '40 тис. км' } },
-        { id: 13, name: 'BMW X5', owner: 'test@example.com', brand: 'BMW', model: 'X5', region: 'Дніпропетровська', year: 2020, priceUSD: 72000, image: 'https://images.unsplash.com/photo-1587397272895-581308492657?q=80&w=1964&auto=format&fit=crop', verified: false, specs: { engine: '3.0L I6', power: '335 к.с.', transmission: 'Автомат', mileage: '50 тис. км' } }
-    ];
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-5 right-5 h-12 w-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg opacity-0 transform translate-y-10 transition-all duration-300 hover:opacity-90">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+    </button>
 
-    const auctionCars = [
-        { id: 5, name: 'Mercedes-AMG GT', year: 2019, image: 'https://images.unsplash.com/photo-1617435850926-d5c317e13735?q=80&w=2070&auto=format&fit=crop', timeLeft: 7200, currentBidUSD: 75500 },
-        { id: 6, name: 'Porsche 911 Carrera', year: 2018, image: 'https://images.unsplash.com/photo-1555516336-9426b3410d5c?q=80&w=2070&auto=format&fit=crop', timeLeft: 18640, currentBidUSD: 82000 },
-        { id: 7, name: 'Ford Mustang Shelby GT500', year: 2020, image: 'https://images.unsplash.com/photo-1580273916551-585a4b5553e1?q=80&w=1964&auto=format&fit=crop', timeLeft: 86400, currentBidUSD: 66000 }
-    ];
-    
-    const regions = [ 'Київська', 'Вінницька', 'Волинська', 'Дніпропетровська', 'Донецька', 'Житомирська', 'Закарпатська', 'Запорізька', 'Івано-Франківська', 'Кіровоградська', 'Луганська', 'Львівська', 'Миколаївська', 'Одеська', 'Полтавська', 'Рівненська', 'Сумська', 'Тернопільська', 'Харківська', 'Херсонська', 'Хмельницька', 'Черкаська', 'Чернівецька', 'Чернігівська' ];
-    const carModels = { 'Acura': ['MDX', 'RDX', 'TLX'], 'Alfa Romeo': ['Giulia', 'Stelvio'], 'Audi': ['A3', 'A4', 'A6', 'Q5', 'Q7', 'Q8', 'RS6'], 'BMW': ['3 Series', '5 Series', '7 Series', 'X3', 'X5', 'X7', 'M5'], 'Chevrolet': ['Camaro', 'Corvette', 'Equinox', 'Malibu', 'Silverado'], 'Chrysler': ['300', 'Pacifica'], 'Citroen': ['C3', 'C4', 'C5 Aircross'], 'Dodge': ['Challenger', 'Charger', 'Durango'], 'Fiat': ['500', 'Punto'], 'Ford': ['Explorer', 'F-150', 'Focus', 'Fusion', 'Mustang'], 'Genesis': ['G70', 'G80', 'GV80'], 'GMC': ['Sierra', 'Yukon'], 'Honda': ['Accord', 'Civic', 'CR-V', 'Pilot'], 'Hyundai': ['Elantra', 'Kona', 'Palisade', 'Santa Fe', 'Sonata', 'Tucson'], 'Infiniti': ['Q50', 'QX60', 'QX80'], 'Jaguar': ['F-Pace', 'F-Type', 'XE', 'XF'], 'Jeep': ['Cherokee', 'Grand Cherokee', 'Wrangler'], 'Kia': ['K5', 'Seltos', 'Sorento', 'Sportage', 'Telluride'], 'Land Rover': ['Defender', 'Discovery', 'Range Rover'], 'Lexus': ['ES', 'GX', 'LX', 'NX', 'RX'], 'Lincoln': ['Aviator', 'Corsair', 'Nautilus', 'Navigator'], 'Maserati': ['Ghibli', 'Levante'], 'Mazda': ['CX-5', 'CX-9', 'Mazda3', 'Mazda6'], 'Mercedes-Benz': ['C-Class', 'E-Class', 'S-Class', 'G-Class', 'GLC', 'GLE'], 'MINI': ['Cooper', 'Countryman'], 'Mitsubishi': ['Outlander', 'Pajero Sport'], 'Nissan': ['Altima', 'Murano', 'Pathfinder', 'Qashqai', 'Rogue', 'X-Trail'], 'Peugeot': ['2008', '3008', '5008', '508'], 'Porsche': ['911', 'Cayenne', 'Macan', 'Panamera'], 'Ram': ['1500', '2500'], 'Renault': ['Arkana', 'Captur', 'Duster', 'Kadjar', 'Megane'], 'Skoda': ['Fabia', 'Karoq', 'Kodiaq', 'Octavia', 'Superb'], 'Subaru': ['Forester', 'Outback', 'WRX'], 'Suzuki': ['Grand Vitara', 'Jimny', 'Vitara'], 'Tesla': ['Model 3', 'Model S', 'Model X', 'Model Y'], 'Toyota': ['Camry', 'Corolla', 'Highlander', 'Land Cruiser', 'RAV4'], 'Volkswagen': ['Golf', 'Jetta', 'Passat', 'Tiguan', 'Touareg'], 'Volvo': ['S60', 'S90', 'XC40', 'XC60', 'XC90'] };
-    const carBrands = Object.keys(carModels);
-    
-    const specIcons = {
-        engine: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12 1.586l-4 4v12.828l4-4V1.586zM3.707 3.293A1 1 0 002 4v12a1 1 0 001.707.707L8 12.414V7.586L3.707 3.293zM17.707 5.293A1 1 0 0016 6v8a1 1 0 001.707.707L22 10.414V9.586L17.707 5.293z" clip-rule="evenodd" /></svg>`,
-        power: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" /></svg>`,
-        transmission: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z" /></svg>`,
-        mileage: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.293a1 1 0 00-1.414-1.414L9 9.586V5a1 1 0 00-2 0v5a1 1 0 001 1h5a1 1 0 000-2h-2.586l2.293-2.293z" clip-rule="evenodd" /></svg>`
-    };
 
-    // --- УПРАВЛЕНИЕ СОСТОЯНИЕМ ---
-    let currentTheme = localStorage.getItem('theme') || 'dark';
-    let currentLang = localStorage.getItem('language') || 'uk';
-    let currentCurrency = localStorage.getItem('currency') || 'USD';
-    let loggedInUser = null;
+    <script type="module">
+        // --- DATA ---
+        const bodyTypes = { body_sedan: "Седан", body_wagon: "Універсал", body_hatchback: "Хетчбек", body_suv: "Позашляховик / SUV", body_minivan: "Мінівен", body_coupe: "Купе", body_cabriolet: "Кабріолет", body_pickup: "Пікап" };
+        const fuelTypes = { fuel_gasoline: "Бензин", fuel_diesel: "Дизель", fuel_lpg_gasoline: "Газ / Бензин", fuel_electric: "Електро", fuel_hybrid: "Гібрид" };
+        const transmissionTypes = { transmission_manual: "Ручна / Механіка", transmission_automatic: "Автомат", transmission_tiptronic: "Типтронік", transmission_robot: "Робот", transmission_variator: "Варіатор" };
+        
+        const carsData = {
+          "Acura": ["MDX", "RDX", "TLX"], "Alfa Romeo": ["Giulia", "Stelvio"], "Audi": ["A3", "A4", "A6", "Q5", "Q7", "Q8"], "BMW": ["3 Series", "5 Series", "7 Series", "X3", "X5", "X6"], "Chevrolet": ["Aveo", "Camaro", "Cruze", "Equinox", "Malibu"], "Chrysler": ["300", "Pacifica"], "Citroen": ["C3", "C4", "C5 Aircross"], "Dacia": ["Logan", "Sandero", "Duster"], "Daewoo": ["Lanos", "Nexia", "Matiz"], "Dodge": ["Challenger", "Charger", "Durango"], "Fiat": ["500", "Punto", "Tipo"], "Ford": ["Fiesta", "Focus", "Fusion", "Kuga", "Mustang"], "Honda": ["Accord", "Civic", "CR-V", "HR-V"], "Hyundai": ["Accent", "Elantra", "Santa Fe", "Sonata", "Tucson"], "Infiniti": ["Q50", "QX60", "QX80"], "Jaguar": ["F-Pace", "XE", "XF"], "Jeep": ["Cherokee", "Compass", "Grand Cherokee", "Wrangler"], "Kia": ["Ceed", "Optima", "Rio", "Sorento", "Sportage"], "Land Rover": ["Discovery", "Range Rover", "Range Rover Evoque", "Range Rover Sport"], "Lexus": ["ES", "GX", "LX", "NX", "RX"], "Mazda": ["3", "6", "CX-5", "CX-9"], "Mercedes-Benz": ["C-Class", "E-Class", "G-Class", "GLE", "S-Class"], "Mitsubishi": ["ASX", "Lancer", "Outlander", "Pajero Sport"], "Nissan": ["Juke", "Leaf", "Qashqai", "Rogue", "X-Trail"], "Opel": ["Astra", "Corsa", "Insignia", "Mokka"], "Peugeot": ["208", "308", "2008", "3008", "5008"], "Porsche": ["911", "Cayenne", "Macan", "Panamera"], "Renault": ["Clio", "Duster", "Captur", "Logan", "Megane"], "Skoda": ["Fabia", "Karoq", "Kodiaq", "Octavia", "Superb"], "Subaru": ["Forester", "Impreza", "Outback"], "Suzuki": ["Grand Vitara", "Jimny", "SX4", "Vitara"], "Tesla": ["Model 3", "Model S", "Model X", "Model Y"], "Toyota": ["Avalon", "Camry", "Corolla", "Highlander", "Land Cruiser", "RAV4"], "Volkswagen": ["Golf", "Jetta", "Passat", "Tiguan", "Touareg"], "Volvo": ["S60", "S90", "XC60", "XC90"]
+        };
+        const ukraineRegions = ["Вінницька", "Волинська", "Дніпропетровська", "Донецька", "Житомирська", "Закарпатська", "Запорізька", "Івано-Франківська", "Київська", "Кіровоградська", "Луганська", "Львівська", "Миколаївська", "Одеська", "Полтавська", "Рівненська", "Сумська", "Тернопільська", "Харківська", "Херсонська", "Хмельницька", "Черкаська", "Чернівецька", "Чернігівська", "АР Крим"];
 
-    // --- ПЕРЕВОДЫ ---
-    const translations = {
-        uk: { nav_buy: "Купити", nav_sell: "Продати", nav_auctions: "Аукціони", nav_regions: "Регіони", login: "Увійти", logout: "Вийти", edit_profile: "Редагувати", hero_title: "Знайди автомобіль своєї мрії", hero_subtitle: "Найбільша база автомобілів, аукціони та перевірені продавці по всій Україні.", search_region_all: "Вся Україна", search_brand: "Марка", search_model_select: "Модель", search_button: "Пошук", featured_title: "Гарячі пропозиції", auctions_title: "Live Аукціони", regions_title: "Пошук по регіонах", footer_copyright: "© 2025 AutoTrade.UA. Всі права захищено.", login_title: "Вхід до профілю", login_password: "Пароль", login_button: "Увійти", login_no_account: "Немає акаунту?", login_register: "Зареєструватись", bid_title: "Зробити ставку", bid_current: "Поточна ставка:", bid_your_bid: "Ваша ставка", bid_placeholder: "Наприклад, 76000", bid_confirm: "Підтвердити ставку", card_details: "Детальніше", card_verified: "Перевірено", auction_ended: "Аукціон завершено", bid_alert: "Ваша ставка має бути вищою за поточну.", search_model_disabled: "Спочатку оберіть марку", no_results: "За вашим запитом автомобілів не знайдено.", catalog_title: "Пошук автомобілів", filters_title: "Фільтри", filter_price: "Ціна, USD", filter_year: "Рік випуску", apply_filters: "Застосувати", my_ads_title: "Мої оголошення", sell_modal_title: "Продаж авто", sell_modal_text: "Функція додавання оголошення незабаром буде доступна. Ми працюємо над цим!" },
-        en: { nav_buy: "Buy", nav_sell: "Sell", nav_auctions: "Auctions", nav_regions: "Regions", login: "Log In", logout: "Log Out", edit_profile: "Edit Profile", hero_title: "Find your dream car", hero_subtitle: "The largest database of cars, auctions and verified sellers throughout Ukraine.", search_region_all: "All Ukraine", search_brand: "Brand", search_model_select: "Model", search_button: "Search", featured_title: "Hot Offers", auctions_title: "Live Auctions", regions_title: "Search by Region", footer_copyright: "© 2025 AutoTrade.UA. All rights reserved.", login_title: "Profile Login", login_password: "Password", login_button: "Log In", login_no_account: "No account?", login_register: "Register", bid_title: "Place a bid", bid_current: "Current bid:", bid_your_bid: "Your bid", bid_placeholder: "E.g., 76000", bid_confirm: "Confirm Bid", card_details: "Details", card_verified: "Verified", auction_ended: "Auction ended", bid_alert: "Your bid must be higher than the current one.", search_model_disabled: "Select a brand first", no_results: "No cars found for your request.", catalog_title: "Car Search", filters_title: "Filters", filter_price: "Price, USD", filter_year: "Year of manufacture", apply_filters: "Apply", my_ads_title: "My Ads", sell_modal_title: "Sell a Car", sell_modal_text: "The feature to add a new listing will be available soon. We are working on it!" },
-        ru: { nav_buy: "Купить", nav_sell: "Продать", nav_auctions: "Аукционы", nav_regions: "Регионы", login: "Войти", logout: "Выйти", edit_profile: "Редактировать", hero_title: "Найди автомобиль своей мечты", hero_subtitle: "Крупнейшая база автомобилей, аукционы и проверенные продавцы по всей Украине.", search_region_all: "Вся Украина", search_brand: "Марка", search_model_select: "Модель", search_button: "Поиск", featured_title: "Горячие предложения", auctions_title: "Live Аукционы", regions_title: "Поиск по регионам", footer_copyright: "© 2025 AutoTrade.UA. Все права защищены.", login_title: "Вход в профиль", login_password: "Пароль", login_button: "Войти", login_no_account: "Нет аккаунта?", login_register: "Зарегистрироваться", bid_title: "Сделать ставку", bid_current: "Текущая ставка:", bid_your_bid: "Ваша ставка", bid_placeholder: "Например, 76000", bid_confirm: "Подтвердить ставку", card_details: "Подробнее", card_verified: "Проверено", auction_ended: "Аукцион завершен", bid_alert: "Ваша ставка должна быть выше текущей.", search_model_disabled: "Сначала выберите марку", no_results: "По вашему запросу автомобилей не найдено.", catalog_title: "Поиск автомобилей", filters_title: "Фильтры", filter_price: "Цена, USD", filter_year: "Год выпуска", apply_filters: "Применить", my_ads_title: "Мои объявления", sell_modal_title: "Продажа авто", sell_modal_text: "Функция добавления объявления скоро будет доступна. Мы работаем над этим!" }
-    };
+        const initialListings = [
+            { id: '1', sellerEmail: 'seller1@example.com', make: 'Volkswagen', model: 'Passat', year: 2018, priceUah: 680000, region: 'Київська', city: 'Київ', imageUrls: ['https://images.unsplash.com/photo-1616421233823-4a0b6a4a1b0c?q=80&w=800', 'https://images.unsplash.com/photo-1616421233716-832165b4385a?q=80&w=800', 'https://images.unsplash.com/photo-1616421233858-6c0b3b3e2b2a?q=80&w=800'], description: 'Офіційний автомобіль, повна історія обслуговування. Комплектація Highline.', mileage: 112, fuel: 'fuel_diesel', transmission: 'transmission_automatic', body: 'body_sedan', owners: 1, inAccident: false, featured: true, vin: 'WBA123456789ABCDE', createdAt: new Date('2025-09-05T10:00:00Z') },
+            { id: '2', sellerEmail: 'seller2@example.com', make: 'Toyota', model: 'RAV4', year: 2020, priceUah: 1100000, region: 'Львівська', city: 'Львів', imageUrls: ['https://images.unsplash.com/photo-1617469723030-f8638500a402?q=80&w=800', 'https://images.unsplash.com/photo-1601814202393-24e03b2e5a7b?q=80&w=800', 'https://images.unsplash.com/photo-1601814202517-73d76d6e9f1a?q=80&w=800'], description: 'Стан нового авто. Повний привід, максимальна комплектація.', mileage: 45, fuel: 'fuel_hybrid', transmission: 'transmission_variator', body: 'body_suv', owners: 1, inAccident: false, vin: 'JTE123456789ABCDE', createdAt: new Date('2025-09-04T12:00:00Z') },
+            { id: '3', sellerEmail: 'seller1@example.com', make: 'Skoda', model: 'Octavia', year: 2017, priceUah: 520000, region: 'Одеська', city: 'Одеса', imageUrls: ['https://images.unsplash.com/photo-1549399542-7e6a9f4a6c25?q=80&w=800', 'https://images.unsplash.com/photo-1620885131235-b3f07a8f8d68?q=80&w=800', 'https://images.unsplash.com/photo-1620885131057-0b1a0a5a3a0e?q=80&w=800'], description: 'Надійний та економічний автомобіль. Два комплекти гуми.', mileage: 155, fuel: 'fuel_gasoline', transmission: 'transmission_manual', body: 'body_wagon', owners: 2, inAccident: false, vin: 'TMB123456789ABCDE', createdAt: new Date('2025-09-03T15:00:00Z') },
+            { id: '4', sellerEmail: 'seller3@example.com', make: 'Ford', model: 'Focus', year: 2016, priceUah: 380000, region: 'Харківська', city: 'Харків', imageUrls: ['https://images.unsplash.com/photo-1514316454349-750a7fd3da3a?q=80&w=800'], description: 'Авто пригнане з США з мінімальними пошкодженнями.', mileage: 98, fuel: 'fuel_gasoline', transmission: 'transmission_automatic', body: 'body_hatchback', owners: 1, inAccident: true, vin: '1FA123456789ABCDE', createdAt: new Date('2025-09-02T18:00:00Z') },
+            { id: '5', sellerEmail: 'seller2@example.com', make: 'BMW', model: 'X5', year: 2019, priceUah: 2100000, region: 'Дніпропетровська', city: 'Дніпро', imageUrls: ['https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=800', 'https://images.unsplash.com/photo-1590656391090-f02a6b29f95f?q=80&w=800', 'https://images.unsplash.com/photo-1589584301369-ec4440a85d38?q=80&w=800'], description: 'M-пакет, панорамний дах, проекція. Авто в ідеальному стані.', mileage: 88, fuel: 'fuel_diesel', transmission: 'transmission_automatic', body: 'body_suv', owners: 1, inAccident: false, featured: true, vin: 'WBA123456789ABCFG', createdAt: new Date('2025-09-01T20:00:00Z') },
+            { id: '6', sellerEmail: 'seller3@example.com', make: 'Renault', model: 'Megane', year: 2018, priceUah: 480000, region: 'Вінницька', city: 'Вінниця', imageUrls: ['https://images.unsplash.com/photo-1616422285538-9e1b2bf1359c?q=80&w=800'], description: 'Свіжопригнаний автомобіль з Європи. Без пробігу по Україні.', mileage: 180, fuel: 'fuel_diesel', transmission: 'transmission_manual', body: 'body_wagon', owners: 1, inAccident: false, vin: 'VF1123456789ABCDE', createdAt: new Date('2025-08-30T10:00:00Z') },
+            { id: '7', sellerEmail: 'seller1@example.com', make: 'Mercedes-Benz', model: 'GLE', year: 2021, priceUah: 2800000, region: 'Київська', city: 'Київ', imageUrls: ['https://images.unsplash.com/photo-1617814085423-a5a40149a4e4?q=80&w=800'], description: 'Офіційний. AMG пакет. Пневмопідвіска.', mileage: 30, fuel: 'fuel_diesel', transmission: 'transmission_automatic', body: 'body_suv', owners: 1, inAccident: false, featured: true, vin: 'WDC123456789ABCDE', createdAt: new Date('2025-08-29T11:00:00Z') },
+            { id: '8', sellerEmail: 'seller2@example.com', make: 'Hyundai', model: 'Tucson', year: 2019, priceUah: 750000, region: 'Львівська', city: 'Львів', imageUrls: ['https://images.unsplash.com/photo-1617531322036-e427773507d3?q=80&w=800'], description: 'Куплений в автосалоні, один власник. Повна сервісна історія.', mileage: 65, fuel: 'fuel_gasoline', transmission: 'transmission_automatic', body: 'body_suv', owners: 1, inAccident: false, vin: 'KMH123456789ABCDE', createdAt: new Date('2025-08-28T14:00:00Z') },
+            { id: '9', sellerEmail: 'seller3@example.com', make: 'Kia', model: 'Sportage', year: 2018, priceUah: 720000, region: 'Одеська', city: 'Одеса', imageUrls: ['https://images.unsplash.com/photo-1560373033-e70da8173752?q=80&w=800'], description: 'Авто в чудовому стані, не потребує вкладень. Комплектація Prestige.', mileage: 95, fuel: 'fuel_diesel', transmission: 'transmission_automatic', body: 'body_suv', owners: 1, inAccident: false, vin: 'KNA123456789ABCDE', createdAt: new Date('2025-08-27T16:00:00Z') },
+            { id: '10', sellerEmail: 'seller1@example.com', make: 'Mazda', model: '6', year: 2017, priceUah: 650000, region: 'Київська', city: 'Київ', imageUrls: ['https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=800'], description: 'Максимальна комплектація. BOSE аудіосистема. Проекція на лобове скло.', mileage: 120, fuel: 'fuel_gasoline', transmission: 'transmission_automatic', body: 'body_sedan', owners: 2, inAccident: false, vin: 'JM1123456789ABCDE', createdAt: new Date('2025-08-26T19:00:00Z') },
+            { id: '11', sellerEmail: 'seller2@example.com', make: 'Audi', model: 'Q7', year: 2016, priceUah: 1400000, region: 'Дніпропетровська', city: 'Дніпро', imageUrls: ['https://images.unsplash.com/photo-1580273916550-425b0a7d5df5?q=80&w=800'], description: 'S-Line, пневмо, панорама. 7 місць. Автомобіль повністю обслужений.', mileage: 160, fuel: 'fuel_diesel', transmission: 'transmission_automatic', body: 'body_suv', owners: 1, inAccident: false, vin: 'WAU123456789ABCDE', createdAt: new Date('2025-08-25T21:00:00Z') },
+            { id: '12', sellerEmail: 'seller3@example.com', make: 'Lexus', model: 'RX', year: 2018, priceUah: 1550000, region: 'Харківська', city: 'Харків', imageUrls: ['https://images.unsplash.com/photo-1582042125345-385c7b415a99?q=80&w=800'], description: 'F-Sport. Офіційний автомобіль. Не битий, не фарбований.', mileage: 85, fuel: 'fuel_hybrid', transmission: 'transmission_automatic', body: 'body_suv', owners: 1, inAccident: false, vin: 'JTJ123456789ABCDE', createdAt: new Date('2025-08-24T09:00:00Z') },
+            { id: '13', sellerEmail: 'seller1@example.com', make: 'Subaru', model: 'Outback', year: 2019, priceUah: 950000, region: 'Львівська', city: 'Львів', imageUrls: ['https://images.unsplash.com/photo-1603551579531-97333ffc129e?q=80&w=800'], description: 'Система EyeSight. Повний привід. Ідеальний для сім\'ї та подорожей.', mileage: 75, fuel: 'fuel_gasoline', transmission: 'transmission_variator', body: 'body_wagon', owners: 1, inAccident: false, vin: 'JF1123456789ABCDE', createdAt: new Date('2025-08-23T13:00:00Z') },
+        ];
+        
+        const initialUsers = [
+            { name: 'Олександр', email: 'seller1@example.com', password: 'password123', registered: '2024-01-15', avatar: 'https://placehold.co/100x100/EFEFEF/333333?text=О' },
+            { name: 'Марія', email: 'seller2@example.com', password: 'password123', registered: '2023-11-02', avatar: 'https://placehold.co/100x100/EFEFEF/333333?text=М' },
+            { name: 'Сергій', email: 'seller3@example.com', password: 'password123', registered: '2024-03-20', avatar: 'https://placehold.co/100x100/EFEFEF/333333?text=С' },
+        ];
 
-    // --- НАВИГАЦИЯ И РЕНДЕРИНГ ---
-    const pages = document.querySelectorAll('.page');
-    const searchBrandSelect = document.getElementById('search-brand-select');
-    const searchModelSelect = document.getElementById('search-model-select');
+        const translations = {
+            uk: {
+                site_title: "АвтоБазар", add_listing: "Додати оголошення", loading: "Завантаження оголошень...", no_results: "Оголошень не знайдено. Спробуйте змінити фільтри.", filter_make: "Марка", any_make: "Будь-яка", filter_model: "Модель", any_model: "Будь-яка", filter_region: "Область", any_region: "Будь-яка", reset_filters: "Скинути", new_listing_title: "Нове оголошення", form_make: "Марка*", select_make: "Оберіть марку", form_model: "Модель*", select_model: "Спочатку оберіть марку", form_year: "Рік випуску*", form_price: "Ціна (в UAH)*", form_region: "Область*", select_region: "Оберіть область", form_city: "Місто*", form_image: "URL фото (основне)", form_gallery_images: "URL фото для галереї (через кому)", form_description: "Опис", submit_listing: "Опублікувати",
+                details_year: "Рік", details_city: "Місто", details_description: "Опис", listing_added: "Оголошення успішно додано!", close: "Закрити",
+                form_mileage: "Пробіг (тис. км)*", form_fuel: "Паливо*", form_transmission: "Коробка передач*", form_body: "Тип кузова*", form_owners: "Кількість власників*", form_accidents: "Участь у ДТП*", select_fuel: "Оберіть паливо", select_transmission: "Оберіть коробку", select_body: "Оберіть тип кузова", option_no_accidents: "Не був у ДТП", option_accidents: "Був у ДТП",
+                details_mileage: "Пробіг", details_fuel: "Паливо", details_transmission: "КПП", details_body: "Кузов", details_owners: "Власників", details_accidents: "ДТП",
+                body_sedan: "Седан", body_wagon: "Універсал", body_hatchback: "Хетчбек", body_suv: "Позашляховик / SUV", body_minivan: "Мінівен", body_coupe: "Купе", body_cabriolet: "Кабріолет", body_pickup: "Пікап",
+                fuel_gasoline: "Бензин", fuel_diesel: "Дизель", fuel_lpg_gasoline: "Газ / Бензин", fuel_electric: "Електро", fuel_hybrid: "Гібрид",
+                transmission_manual: "Ручна / Механіка", transmission_automatic: "Автомат", transmission_tiptronic: "Типтронік", transmission_robot: "Робот", transmission_variator: "Варіатор",
+                hero_title: "Знайдіть автомобіль своєї мрії", hero_subtitle: "Найбільший вибір вживаних авто в Україні. Швидко, зручно та безпечно.",
+                footer_promo: "© 2025. Всі права захищено.", footer_nav: "Навігація", footer_home: "Головна", footer_about: "Про нас", footer_company: "Компанія", footer_contact: "Контакти", footer_legal: "Правова інформація", footer_terms: "Умови використання", footer_privacy: "Політика конфіденційності",
+                login: "Вхід", register: "Реєстрація", logout_title: "Вийти", password: "Пароль", login_title: "Вхід в акаунт", login_subtitle: "Ласкаво просимо!", register_title: "Створення акаунту", register_subtitle: "Приєднуйтесь до нас!",
+                login_error: "Невірнa пошта або пароль.", register_error: "Користувач з такою поштою вже існує.", contact_seller: "Зв'язатись з продавцем", contact_seller_info: "Контакт продавця: ", must_login_contact: "Увійдіть в акаунт, щоб побачити контакти", popular_brands: "Популярні марки", seller_info: "Інформація про продавця", seller_on_site: "На сайті з", form_name: "Ім'я", featured_listings: "Рекомендовані оголошення", why_choose_us: "Чому обирають нас?", benefit_1_title: "Найбільший вибір", benefit_1_desc: "Тисячі перевірених автомобілів з усієї України.", benefit_2_title: "Зручний пошук", benefit_2_desc: "Прості та потужні фільтри для швидкого пошуку.", benefit_3_title: "Надійні продавці", benefit_3_desc: "Система верифікації для вашої безпеки.",
+                continue_google: "Продовжити з Google", continue_facebook: "Продовжити з Facebook", or_continue_with: "Або", forgot_password: "Забули пароль?", no_account: "Немає акаунту?", has_account: "Вже є акаунт?",
+                stat_listings: "Оголошень", stat_sold: "Продано авто", stat_users: "Користувачів", stat_brands: "Марок авто", my_account: "Мій кабінет", my_listings_tab: "Мої оголошення", my_favorites_tab: "Вибрані оголошення",
+                no_my_listings: "У вас ще немає оголошень.", no_my_listings_desc: "Натисніть кнопку нижче, щоб додати своє перше оголошення.", add_first_listing: "Додати оголошення", no_favorites: "У вас немає вибраних оголошень.", no_favorites_desc: "Натисніть на сердечко на оголошенні, щоб додати його сюди.", go_to_main: "На головну",
+                edit_listing_title: "Редагувати оголошення", save_changes: "Зберегти зміни", delete_listing: "Видалити", confirm_delete: "Ви впевнені, що хочете видалити це оголошення? Цю дію не можна скасувати.", vin_report_title: "Звіт по VIN-коду", check_vin: "Перевірити VIN",
+                sort_by: "Сортувати за", sort_newest: "Новизною", sort_price_asc: "Ціною: від дешевих", sort_price_desc: "Ціною: від дорогих", sort_mileage_asc: "Пробігом: по зростанню",
+            },
+            ru: {
+                site_title: "АвтоБазар", add_listing: "Добавить объявление", loading: "Загрузка объявлений...", no_results: "Объявлений не найдено. Попробуйте изменить фильтры.", filter_make: "Марка", any_make: "Любая", filter_model: "Модель", any_model: "Любая", filter_region: "Область", any_region: "Любая", reset_filters: "Сбросить", new_listing_title: "Новое объявление", form_make: "Марка*", select_make: "Выберите марку", form_model: "Модель*", select_model: "Сначала выберите марку", form_year: "Год выпуска*", form_price: "Цена (в UAH)*", form_region: "Область*", select_region: "Выберите область", form_city: "Город*", form_image: "URL фото (основное)", form_gallery_images: "URL фото для галереи (через запятую)", form_description: "Описание", submit_listing: "Опубликовать",
+                details_year: "Год", details_city: "Город", details_description: "Описание", listing_added: "Объявление успешно добавлено!", close: "Закрыть",
+                form_mileage: "Пробег (тыс. км)*", form_fuel: "Топливо*", form_transmission: "Коробка передач*", form_body: "Тип кузова*", form_owners: "Количество владельцев*", form_accidents: "Участие в ДТП*", select_fuel: "Выберите топливо", select_transmission: "Выберите коробку", select_body: "Выберите тип кузова", option_no_accidents: "Не был в ДТП", option_accidents: "Был в ДТП",
+                details_mileage: "Пробег", details_fuel: "Топливо", details_transmission: "КПП", details_body: "Кузов", details_owners: "Владельцев", details_accidents: "ДТП",
+                body_sedan: "Седан", body_wagon: "Универсал", body_hatchback: "Хэтчбек", body_suv: "Внедорожник / SUV", body_minivan: "Минивэн", body_coupe: "Купе", body_cabriolet: "Кабриолет", body_pickup: "Пикап",
+                fuel_gasoline: "Бензин", fuel_diesel: "Дизель", fuel_lpg_gasoline: "Газ / Бензин", fuel_electric: "Электро", fuel_hybrid: "Гибрид",
+                transmission_manual: "Ручная / Механика", transmission_automatic: "Автомат", transmission_tiptronic: "Типтроник", transmission_robot: "Робот", transmission_variator: "Вариатор",
+                hero_title: "Найдите автомобиль своей мечты", hero_subtitle: "Самый большой выбор подержанных авто в Украине. Быстро, удобно и безопасно.",
+                footer_promo: "© 2025. Все права защищены.", footer_nav: "Навигация", footer_home: "Главная", footer_about: "О нас", footer_company: "Компания", footer_contact: "Контакты", footer_legal: "Правовая информация", footer_terms: "Условия использования", footer_privacy: "Политика конфиденциальности",
+                login: "Вход", register: "Регистрация", logout_title: "Выйти", password: "Пароль", login_title: "Вход в аккаунт", login_subtitle: "Добро пожаловать!", register_title: "Создание аккаунта", register_subtitle: "Присоединяйтесь к нам!",
+                login_error: "Неверная почта или пароль.", register_error: "Пользователь с такой почтой уже существует.", contact_seller: "Связаться с продавцом", contact_seller_info: "Контакт продавца: ", must_login_contact: "Войдите в аккаунт, чтобы увидеть контакты", popular_brands: "Популярные марки", seller_info: "Информация о продавце", seller_on_site: "На сайте с", form_name: "Имя", featured_listings: "Рекомендуемые объявления", why_choose_us: "Почему выбирают нас?", benefit_1_title: "Самый большой выбор", benefit_1_desc: "Тысячи проверенных автомобилей со всей Украины.", benefit_2_title: "Удобный поиск", benefit_2_desc: "Простые и мощные фильтры для быстрого поиска.", benefit_3_title: "Надежные продавцы", benefit_3_desc: "Система верификации для вашей безопасности.",
+                continue_google: "Продолжить с Google", continue_facebook: "Продолжить с Facebook", or_continue_with: "Или", forgot_password: "Забыли пароль?", no_account: "Нет аккаунта?", has_account: "Уже есть аккаунт?",
+                stat_listings: "Объявлений", stat_sold: "Продано авто", stat_users: "Пользователей", stat_brands: "Марок авто", my_account: "Мой кабинет", my_listings_tab: "Мои объявления", my_favorites_tab: "Избранные объявления",
+                no_my_listings: "У вас еще нет объявлений.", no_my_listings_desc: "Нажмите кнопку ниже, чтобы добавить свое первое объявление.", add_first_listing: "Добавить объявление", no_favorites: "У вас нет избранных объявлений.", no_favorites_desc: "Нажмите на сердечко на объявлении, чтобы добавить его сюда.", go_to_main: "На главную",
+                edit_listing_title: "Редактировать объявление", save_changes: "Сохранить изменения", delete_listing: "Удалить", confirm_delete: "Вы уверены, что хотите удалить это объявление? Это действие нельзя отменить.", vin_report_title: "Отчет по VIN-коду", check_vin: "Проверить VIN",
+                sort_by: "Сортировать по", sort_newest: "Новизне", sort_price_asc: "Цене: от дешевых", sort_price_desc: "Цене: от дорогих", sort_mileage_asc: "Пробегу: по возрастанию",
+            },
+            en: {
+                site_title: "AutoBazar", add_listing: "Add Listing", loading: "Loading listings...", no_results: "No listings found. Try changing the filters.", filter_make: "Make", any_make: "Any", filter_model: "Model", any_model: "Any", filter_region: "Region", any_region: "Any", reset_filters: "Reset", new_listing_title: "New Listing", form_make: "Make*", select_make: "Select make", form_model: "Model*", select_model: "First select make", form_year: "Year*", form_price: "Price (in UAH)*", form_region: "Region*", select_region: "Select region", form_city: "City*", form_image: "Photo URL (main)", form_gallery_images: "Gallery Photo URLs (comma-separated)", form_description: "Description", submit_listing: "Publish",
+                details_year: "Year", details_city: "City", details_description: "Description", listing_added: "Listing added successfully!", close: "Close",
+                form_mileage: "Mileage (thou. km)*", form_fuel: "Fuel Type*", form_transmission: "Transmission*", form_body: "Body Type*", form_owners: "Number of owners*", form_accidents: "Involved in accidents*", select_fuel: "Select fuel type", select_transmission: "Select transmission", select_body: "Select body type", option_no_accidents: "No accidents", option_accidents: "Was in accident",
+                details_mileage: "Mileage", details_fuel: "Fuel", details_transmission: "Gearbox", details_body: "Body", details_owners: "Owners", details_accidents: "Accidents",
+                body_sedan: "Sedan", body_wagon: "Wagon", body_hatchback: "Hatchback", body_suv: "SUV", body_minivan: "Minivan", body_coupe: "Coupe", body_cabriolet: "Cabriolet", body_pickup: "Pickup",
+                fuel_gasoline: "Gasoline", fuel_diesel: "Diesel", fuel_lpg_gasoline: "LPG / Gasoline", fuel_electric: "Electric", fuel_hybrid: "Hybrid",
+                transmission_manual: "Manual", transmission_automatic: "Automatic", transmission_tiptronic: "Tiptronic", transmission_robot: "Robot", transmission_variator: "CVT",
+                hero_title: "Find your dream car", hero_subtitle: "The largest selection of used cars in Ukraine. Fast, convenient and safe.",
+                footer_promo: "© 2025. All rights reserved.", footer_nav: "Navigation", footer_home: "Home", footer_about: "About Us", footer_company: "Company", footer_contact: "Contact", footer_legal: "Legal", footer_terms: "Terms of Use", footer_privacy: "Privacy Policy",
+                login: "Login", register: "Register", logout_title: "Logout", password: "Password", login_title: "Account Login", login_subtitle: "Welcome back!", register_title: "Create Account", register_subtitle: "Join us!",
+                login_error: "Invalid email or password.", register_error: "User with this email already exists.", contact_seller: "Contact seller", contact_seller_info: "Seller contact: ", must_login_contact: "Login to see seller contacts", popular_brands: "Popular Brands", seller_info: "Seller Information", seller_on_site: "On site since", form_name: "Name", featured_listings: "Featured Listings", why_choose_us: "Why Choose Us?", benefit_1_title: "Largest Selection", benefit_1_desc: "Thousands of verified cars from all over Ukraine.", benefit_2_title: "Convenient Search", benefit_2_desc: "Simple and powerful filters for a quick search.", benefit_3_title: "Reliable Sellers", benefit_3_desc: "A verification system for your safety.",
+                continue_google: "Continue with Google", continue_facebook: "Continue with Facebook", or_continue_with: "Or", forgot_password: "Forgot password?", no_account: "No account?", has_account: "Already have an account?",
+                 stat_listings: "Listings", stat_sold: "Cars Sold", stat_users: "Users", stat_brands: "Car Brands", my_account: "My Account", my_listings_tab: "My Listings", my_favorites_tab: "My Favorites",
+                 no_my_listings: "You have no listings yet.", no_my_listings_desc: "Click the button below to add your first listing.", add_first_listing: "Add Listing", no_favorites: "You have no favorite listings.", no_favorites_desc: "Click the heart on a listing to add it here.", go_to_main: "Go to Main Page",
+                 edit_listing_title: "Edit Listing", save_changes: "Save Changes", delete_listing: "Delete", confirm_delete: "Are you sure you want to delete this listing? This action cannot be undone.", vin_report_title: "VIN Report", check_vin: "Check VIN",
+                 sort_by: "Sort by", sort_newest: "Newest", sort_price_asc: "Price: Low to High", sort_price_desc: "Price: High to Low", sort_mileage_asc: "Mileage: Low to High",
+            }
+        };
 
-    function showPage(pageId) {
-        pages.forEach(page => {
-            page.classList.toggle('active', page.id === `${pageId}-page`);
+        const currencyRates = { UAH: 1, USD: 39.5, EUR: 42.5 };
+
+        // --- STATE ---
+        let state = {
+            theme: localStorage.getItem('theme') || 'light',
+            language: localStorage.getItem('language') || 'uk',
+            currency: localStorage.getItem('currency') || 'UAH',
+            listings: [],
+            filters: { make: '', model: '', region: '', sortBy: 'newest' },
+            currentUser: JSON.parse(sessionStorage.getItem('currentUser')) || null,
+            favorites: [],
+            currentPage: 1,
+            listingsPerPage: 12,
+        };
+        
+        // --- DOM ELEMENTS ---
+        const mainHeader = document.getElementById('main-header');
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIconLight = document.getElementById('theme-icon-light');
+        const themeIconDark = document.getElementById('theme-icon-dark');
+        const languageSwitcher = document.getElementById('language-switcher');
+        const currencySwitcher = document.getElementById('currency-switcher');
+        const listingsGrid = document.getElementById('listings-grid');
+        const featuredListingsGrid = document.getElementById('featured-listings-grid');
+        const loader = document.getElementById('loader');
+        const noResults = document.getElementById('no-results');
+        const pages = document.querySelectorAll('.page');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        const filterMake = document.getElementById('filter-make');
+        const filterModel = document.getElementById('filter-model');
+        const filterRegion = document.getElementById('filter-region');
+        const sortBy = document.getElementById('sort-by');
+        const resetFiltersBtn = document.getElementById('reset-filters-btn');
+        const popularBrandsGrid = document.getElementById('popular-brands-grid');
+        const paginationControls = document.getElementById('pagination-controls');
+
+        const addListingForm = document.getElementById('add-listing-form');
+        const formMake = document.getElementById('form-make');
+        const formModel = document.getElementById('form-model');
+        const formRegion = document.getElementById('form-region');
+        const formFuel = document.getElementById('form-fuel');
+        const formTransmission = document.getElementById('form-transmission');
+        const formBody = document.getElementById('form-body');
+
+        const detailsModal = document.getElementById('details-modal');
+        const detailsModalContent = document.getElementById('details-modal-content');
+        const vinReportModal = document.getElementById('vin-report-modal');
+        const vinReportContent = document.getElementById('vin-report-content');
+        
+        const loginModal = document.getElementById('login-modal');
+        const registerModal = document.getElementById('register-modal');
+        const closeModalBtns = document.querySelectorAll('.close-modal-btn');
+
+        const loggedOutView = document.getElementById('logged-out-view');
+        const loggedInView = document.getElementById('logged-in-view');
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const loginError = document.getElementById('login-error');
+        const registerError = document.getElementById('register-error');
+        const addListingBtn = document.getElementById('add-listing-btn');
+        
+        const showRegisterModalLink = document.getElementById('show-register-modal');
+        const showLoginModalLink = document.getElementById('show-login-modal');
+        
+        const accountTabs = document.querySelectorAll('.account-tab');
+        const accountTabContents = document.querySelectorAll('.account-tab-content');
+        const myLisingsTabContent = document.getElementById('my-listings-tab-content');
+        const myFavoritesTabContent = document.getElementById('my-favorites-tab-content');
+
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+        const backToTopBtn = document.getElementById('back-to-top');
+
+        // --- LOCAL AUTH & DATA FUNCTIONS ---
+        const getUsers = () => JSON.parse(localStorage.getItem('users')) || [];
+        const saveUsers = (users) => localStorage.setItem('users', JSON.stringify(users));
+        const getListings = () => JSON.parse(localStorage.getItem('listings')) || [];
+        const saveListings = (listings) => localStorage.setItem('listings', JSON.stringify(listings));
+        const getFavorites = () => {
+            if (!state.currentUser) return [];
+            return JSON.parse(localStorage.getItem(`favorites_${state.currentUser.email}`)) || [];
+        }
+        const saveFavorites = (favorites) => {
+            if (!state.currentUser) return;
+            localStorage.setItem(`favorites_${state.currentUser.email}`, JSON.stringify(favorites));
+        }
+
+        const seedInitialData = () => {
+            if (getUsers().length === 0) {
+                saveUsers(initialUsers);
+            }
+            if (getListings().length === 0) {
+                saveListings(initialListings);
+            }
+            state.listings = getListings();
+        };
+
+        const registerUser = (email, password, name) => {
+            const users = getUsers();
+            if (users.find(user => user.email === email)) {
+                return null; // User already exists
+            }
+            const newUser = {
+                name,
+                email,
+                password,
+                registered: new Date().toISOString().split('T')[0], // YYYY-MM-DD
+                avatar: `https://placehold.co/100x100/EFEFEF/333333?text=${name.charAt(0).toUpperCase()}`
+            };
+            users.push(newUser);
+            saveUsers(users);
+            return newUser;
+        };
+        
+        const loginUser = (email, password) => {
+            const users = getUsers();
+            return users.find(user => user.email === email && user.password === password) || null;
+        };
+        
+        const findUserByEmail = (email) => {
+            const users = getUsers();
+            return users.find(user => user.email === email);
+        };
+
+        const updateAuthUI = () => {
+            if (state.currentUser) {
+                if(loggedOutView) loggedOutView.classList.add('hidden');
+                if(loggedInView) {
+                    loggedInView.classList.remove('hidden');
+                    loggedInView.classList.add('flex');
+                }
+                state.favorites = getFavorites();
+            } else {
+                if(loggedOutView) loggedOutView.classList.remove('hidden');
+                 if(loggedInView) {
+                    loggedInView.classList.add('hidden');
+                    loggedInView.classList.remove('flex');
+                }
+                state.favorites = [];
+            }
+            renderListings();
+        };
+        
+        const logoutUser = () => {
+            state.currentUser = null;
+            sessionStorage.removeItem('currentUser');
+            updateAuthUI();
+            showPage('home');
+        };
+
+        // --- FUNCTIONS ---
+
+        const showToast = (message, isInfo = false) => {
+            toastMessage.textContent = message;
+            toast.classList.remove('bg-green-500', 'bg-blue-500', 'bg-red-500');
+            toast.classList.add(isInfo ? 'bg-blue-500' : 'bg-green-500');
+            toast.classList.remove('opacity-0', 'translate-y-10');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-10');
+            }, 3000);
+        };
+
+        const t = (key) => translations[state.language][key] || key;
+
+        const updateUIText = () => {
+            document.querySelectorAll('[data-translate-key]').forEach(el => {
+                const key = el.getAttribute('data-translate-key');
+                const translation = t(key);
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    if(el.type !== 'submit' && el.type !== 'button') el.placeholder = translation;
+                } else if (el.tagName === 'OPTION' && el.value === "") {
+                    el.textContent = translation;
+                } else if(el.tagName !== 'OPTION') {
+                     el.textContent = translation;
+                }
+            });
+            document.title = t('site_title') + " — " + (state.language === 'uk' ? 'Купити та Продати Авто' : state.language === 'ru' ? 'Купить и Продать Авто' : 'Buy and Sell Cars');
+        };
+
+        const applyTheme = () => {
+            if (state.theme === 'dark') {
+                document.documentElement.classList.add('dark');
+                if(themeIconLight) themeIconLight.classList.add('hidden');
+                if(themeIconDark) themeIconDark.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                if(themeIconLight) themeIconLight.classList.remove('hidden');
+                if(themeIconDark) themeIconDark.classList.add('hidden');
+            }
+        };
+
+        const formatPrice = (priceUah) => {
+            const rate = currencyRates[state.currency];
+            const price = priceUah / rate;
+            const symbol = state.currency === 'UAH' ? '₴' : state.currency === 'USD' ? '$' : '€';
+            return `${symbol} ${Math.round(price).toLocaleString('uk-UA')}`;
+        };
+
+        const renderListings = () => {
+            if(!loader) return;
+            loader.classList.add('hidden');
+            
+            let filteredListings = state.listings.filter(listing => {
+                const makeMatch = !state.filters.make || listing.make === state.filters.make;
+                const modelMatch = !state.filters.model || listing.model === state.filters.model;
+                const regionMatch = !state.filters.region || listing.region === state.filters.region;
+                return makeMatch && modelMatch && regionMatch;
+            });
+
+            // Sorting
+            switch(state.filters.sortBy) {
+                case 'price_asc': filteredListings.sort((a, b) => a.priceUah - b.priceUah); break;
+                case 'price_desc': filteredListings.sort((a, b) => b.priceUah - a.priceUah); break;
+                case 'mileage_asc': filteredListings.sort((a, b) => a.mileage - b.mileage); break;
+                case 'newest':
+                default:
+                     filteredListings.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                     break;
+            }
+            
+            // Pagination
+            const totalPages = Math.ceil(filteredListings.length / state.listingsPerPage);
+            if(state.currentPage > totalPages && totalPages > 0) state.currentPage = totalPages;
+            if(filteredListings.length === 0) state.currentPage = 1;
+
+            const paginatedListings = filteredListings.slice((state.currentPage - 1) * state.listingsPerPage, state.currentPage * state.listingsPerPage);
+
+
+            const cardHtml = (listing) => {
+                 const isFavorited = state.favorites.includes(listing.id);
+                 return `
+                    <div class="card rounded-md overflow-hidden transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-1.5 border border-transparent hover:border-primary/20 relative" data-id="${listing.id}">
+                        <button class="favorite-btn absolute top-2 right-2 z-10 p-2 rounded-full bg-background/70 backdrop-blur-sm transition-colors hover:bg-background ${isFavorited ? 'favorited' : ''}" data-id="${listing.id}">${icons.favorite}</button>
+                        <div class="cursor-pointer listing-card-main">
+                            <img src="${(listing.imageUrls && listing.imageUrls[0]) || 'https://placehold.co/600x400/27272a/fafafa?text=AutoBazar'}" alt="${listing.make} ${listing.model}" class="w-full h-48 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/27272a/fafafa?text=AutoBazar';">
+                            <div class="p-4">
+                                <h3 class="font-bold text-lg truncate">${listing.make} ${listing.model}</h3>
+                                <p class="text-xl font-semibold text-primary/90 my-1">${formatPrice(listing.priceUah)}</p>
+                                <div class="flex items-center gap-4 text-xs text-muted-foreground mt-2">
+                                   <span class="flex items-center gap-1">${icons.mileage.replace('w-5 h-5','w-4 h-4')} ${listing.mileage} тис. км</span>
+                                   <span class="flex items-center gap-1">${icons.fuel.replace('w-5 h-5','w-4 h-4')} ${t(listing.fuel)}</span>
+                                   <span class="flex items-center gap-1">${icons.transmission.replace('w-5 h-5','w-4 h-4')} ${t(listing.transmission)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (filteredListings.length === 0) {
+                if(noResults) noResults.classList.remove('hidden');
+                if(listingsGrid) listingsGrid.innerHTML = '';
+            } else {
+                if(noResults) noResults.classList.add('hidden');
+                if(listingsGrid) listingsGrid.innerHTML = paginatedListings.map(cardHtml).join('');
+            }
+            
+            renderPagination(totalPages, filteredListings.length);
+
+            // Render featured listings
+            const featured = state.listings.filter(l => l.featured);
+            if(featuredListingsGrid) featuredListingsGrid.innerHTML = featured.map(listing => `<div class="w-80 shrink-0">${cardHtml(listing)}</div>`).join('');
+        };
+        
+        const renderPagination = (totalPages) => {
+            if (totalPages <= 1) {
+                if(paginationControls) paginationControls.innerHTML = '';
+                return;
+            }
+            let html = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const activeClass = i === state.currentPage ? 'btn-primary' : 'btn-secondary';
+                html += `<button class="${activeClass} page-btn h-10 w-10 rounded-md" data-page="${i}">${i}</button>`;
+            }
+            if(paginationControls) paginationControls.innerHTML = html;
+        };
+        
+        const showPage = (pageId) => {
+            if((pageId === 'add' || pageId === 'account') && !state.currentUser) {
+                openModal(loginModal);
+                return;
+            }
+            pages.forEach(page => page.classList.add('hidden'));
+            const pageToShow = document.getElementById(`${pageId}-page`);
+            if(pageToShow) pageToShow.classList.remove('hidden');
+            window.scrollTo(0, 0);
+
+            if(pageId === 'account') {
+                renderMyAccountPage();
+            }
+             if (pageId === 'add') {
+                // Reset form for adding new item
+                resetAndPrepareForm();
+            }
+        };
+
+        const populateSelect = (selectElement, data, placeholderKey) => {
+            if(!selectElement) return;
+            const currentVal = selectElement.value;
+            selectElement.innerHTML = `<option value="">${t(placeholderKey)}</option>`;
+            data.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item;
+                option.textContent = item;
+                selectElement.appendChild(option);
+            });
+            selectElement.value = currentVal;
+        };
+        
+        const populateModels = (make, modelSelectElement, placeholderKey) => {
+            if(!modelSelectElement) return;
+            const currentVal = modelSelectElement.value;
+            modelSelectElement.innerHTML = `<option value="">${t(placeholderKey)}</option>`;
+            if (make && carsData[make]) {
+                modelSelectElement.disabled = false;
+                carsData[make].forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = model;
+                    option.textContent = model;
+                    modelSelectElement.appendChild(option);
+                });
+            } else {
+                modelSelectElement.disabled = true;
+            }
+            modelSelectElement.value = currentVal;
+        };
+
+        const populateSelectFromObject = (selectElement, dataObject, placeholderKey) => {
+            if(!selectElement) return;
+            selectElement.innerHTML = `<option value="" disabled selected>${t(placeholderKey)}</option>`;
+            for (const key in dataObject) {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = t(key);
+                selectElement.appendChild(option);
+            }
+        };
+        
+        const createIcon = (path) => `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-muted-foreground shrink-0">${path}</svg>`;
+
+        const icons = {
+            year: createIcon('<rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/>'),
+            location: createIcon('<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>'),
+            mileage: createIcon('<path d="M4 12V8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v4"/><path d="M12 12v6"/><path d="m15 15-3 3-3-3"/><path d="M8.5 8.5v.01"/><path d="M15.5 8.5v.01"/>'),
+            transmission: createIcon('<path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"/><path d="M12 15v-3"/><path d="m10 9 1.5 1.5"/><path d="m14 9-1.5 1.5"/>'),
+            fuel: createIcon('<line x1="14" x2="14" y1="11" y2="17"/><line x1="8" x2="8" y1="11" y2="17"/><path d="M10 11h4"/><path d="M17 11h.5a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5H17"/><path d="M8 7V4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3"/><path d="M7 17a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3H7Z"/>'),
+            body: createIcon('<path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/>'),
+            owners: createIcon('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'),
+            accidents: createIcon('<path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/>'),
+            google: `<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"><title>Google</title><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.85 3.18-1.73 4.1-1.02 1.02-2.62 2.04-4.82 2.04-5.82 0-9.6-4.82-9.6-10.4 0-5.58 3.78-10.4 9.6-10.4 3.32 0 5.14 1.38 6.32 2.54l2.58-2.58C19.34 1.3 16.38 0 12.48 0 5.88 0 .02 5.82.02 12.8c0 6.98 5.86 12.8 12.46 12.8 3.88 0 6.72-1.22 8.86-3.48 2.3-2.3 3.1-5.78 3.1-9.28 0-.6-.06-1.18-.18-1.74h-11.8z" fill="currentColor"/></svg>`,
+            facebook: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>`,
+            eyeOpen: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`,
+            eyeClosed: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>`,
+            favorite: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`,
+            vin: createIcon('<path d="M20 12V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8"/><path d="M18 22v-4"/><path d="M22 22v-4"/><path d="M12 12H8"/><path d="M12 8H8"/><path d="m18 16-2-2 2-2"/><path d="m14 16 2-2-2-2"/>')
+        };
+
+
+        const openDetailsModal = (listingId) => {
+            const listing = state.listings.find(l => l.id === listingId);
+            if (!listing) return;
+
+            const seller = findUserByEmail(listing.sellerEmail);
+            const isUserLoggedIn = !!state.currentUser;
+
+            let galleryHtml = (listing.imageUrls && listing.imageUrls.length > 0) ? `
+                <img id="main-gallery-image" src="${listing.imageUrls[0]}" alt="${listing.make} ${listing.model}" class="w-full h-auto object-cover rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/600x400/27272a/fafafa?text=AutoBazar';">
+                <div id="thumbnail-gallery" class="flex gap-2 overflow-x-auto">
+                    ${listing.imageUrls.map((url, index) => `
+                        <img src="${url}" class="h-16 w-16 object-cover rounded-md cursor-pointer ${index === 0 ? 'thumbnail-active' : ''}" data-src="${url}">
+                    `).join('')}
+                </div>
+            ` : `<img src="https://placehold.co/600x400/27272a/fafafa?text=AutoBazar" alt="${listing.make} ${listing.model}" class="w-full h-auto object-cover rounded-md">`;
+
+            let sellerCardHtml = `
+                <div class="mt-6 p-4 rounded-md bg-secondary border border-border">
+                    <h4 class="font-semibold mb-3" data-translate-key="seller_info">${t('seller_info')}</h4>
+                    <div class="flex items-center gap-4">
+                        <img src="${seller ? seller.avatar : 'https://placehold.co/100x100/EFEFEF/333333?text=?'}" alt="avatar" class="w-16 h-16 rounded-full">
+                        <div>
+                            <p class="font-bold text-lg">${seller ? seller.name : 'Анонім'}</p>
+                            <p class="text-sm text-muted-foreground">${t('seller_on_site')} ${seller ? new Date(seller.registered).toLocaleDateString('uk-UA') : 'N/A'}</p>
+                        </div>
+                    </div>
+                </div>`;
+
+            detailsModalContent.innerHTML = `
+                <button id="close-modal-btn" class="absolute top-4 right-4 text-muted-foreground hover:text-foreground text-3xl font-bold z-10">&times;</button>
+                <div class="grid md:grid-cols-5 gap-6 p-6">
+                    <div class="md:col-span-3">
+                         ${galleryHtml}
+                    </div>
+                    <div class="md:col-span-2 flex flex-col">
+                        <h2 class="text-2xl md:text-3xl font-bold">${listing.make} ${listing.model}</h2>
+                        <p class="text-3xl font-bold text-primary/90 my-3">${formatPrice(listing.priceUah)}</p>
+                        ${listing.vin ? `<div class="mb-4"><button id="check-vin-btn" class="btn-secondary w-full h-10 rounded-md font-semibold text-sm flex items-center justify-center gap-2">${icons.vin} <span data-translate-key="check_vin">${t('check_vin')}</span>: ${listing.vin}</button></div>` : ''}
+                         ${listing.description ? `
+                            <div class="my-4">
+                                <h4 class="font-semibold mb-1">${t('details_description')}:</h4>
+                                <p class="text-muted-foreground text-sm whitespace-pre-wrap">${listing.description}</p>
+                            </div>` : ''}
+                        ${sellerCardHtml}
+                        <div class="mt-4">
+                           <button id="contact-seller-btn" class="btn-primary w-full h-10 rounded-md font-semibold" ${!isUserLoggedIn ? 'disabled' : ''} title="${!isUserLoggedIn ? t('must_login_contact') : ''}">${t('contact_seller')}</button>
+                        </div>
+                    </div>
+                    <div class="md:col-span-5 grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-3 text-sm mt-4 border-t border-border pt-4">
+                        <div class="flex items-center gap-2">${icons.year}<span>${t('details_year')}: <strong>${listing.year}</strong></span></div>
+                        <div class="flex items-center gap-2">${icons.location}<span>${t('details_city')}: <strong>${listing.city}</strong></span></div>
+                        <div class="flex items-center gap-2">${icons.mileage}<span>${t('details_mileage')}: <strong>${listing.mileage} тис. км</strong></span></div>
+                        <div class="flex items-center gap-2">${icons.transmission}<span>${t('details_transmission')}: <strong>${t(listing.transmission)}</strong></span></div>
+                        <div class="flex items-center gap-2">${icons.fuel}<span>${t('details_fuel')}: <strong>${t(listing.fuel)}</strong></span></div>
+                        <div class="flex items-center gap-2">${icons.body}<span>${t('details_body')}: <strong>${t(listing.body)}</strong></span></div>
+                        <div class="flex items-center gap-2">${icons.owners}<span>${t('details_owners')}: <strong>${listing.owners}</strong></span></div>
+                        <div class="flex items-center gap-2">${icons.accidents}<span>${t('details_accidents')}: <strong>${listing.inAccident ? t('option_accidents') : t('option_no_accidents')}</strong></span></div>
+                    </div>
+                </div>
+            `;
+            detailsModal.classList.remove('hidden');
+            detailsModal.classList.add('flex');
+            setTimeout(() => {
+                detailsModalContent.classList.remove('opacity-0', 'scale-95');
+            }, 10);
+            
+            document.getElementById('close-modal-btn').addEventListener('click', closeDetailsModal);
+            document.getElementById('contact-seller-btn').addEventListener('click', () => {
+                showToast(t('contact_seller_info') + listing.sellerEmail, true);
+            });
+            
+            const checkVinBtn = document.getElementById('check-vin-btn');
+            if (checkVinBtn) {
+                checkVinBtn.addEventListener('click', () => showVinReport(listing));
+            }
+
+            // Add gallery functionality
+            const mainImage = document.getElementById('main-gallery-image');
+            const thumbnails = document.querySelectorAll('#thumbnail-gallery img');
+            thumbnails.forEach(thumb => {
+                thumb.addEventListener('click', (e) => {
+                    mainImage.src = e.target.dataset.src;
+                    thumbnails.forEach(t => t.classList.remove('thumbnail-active'));
+                    e.target.classList.add('thumbnail-active');
+                });
+            });
+        };
+        
+        const openModal = (modalElement) => {
+            modalElement.classList.remove('hidden');
+            modalElement.classList.add('flex');
+            setTimeout(() => {
+                modalElement.querySelector('.card').classList.remove('opacity-0', 'scale-95');
+            }, 10);
+        };
+        
+        const closeModal = (modalElement) => {
+             if (!modalElement) return;
+            modalElement.querySelector('.card').classList.add('opacity-0', 'scale-95');
+            setTimeout(() => {
+                modalElement.classList.add('hidden');
+                modalElement.classList.remove('flex');
+            }, 200);
+        };
+        
+        const closeDetailsModal = () => {
+            detailsModalContent.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => {
+                detailsModal.classList.add('hidden');
+                detailsModal.classList.remove('flex');
+            }, 200);
+        };
+        
+        const renderPopularBrands = () => {
+            const brands = ["Audi", "BMW", "Ford", "Honda", "Hyundai", "Kia", "Mazda", "Mercedes-Benz", "Nissan", "Skoda", "Toyota", "Volkswagen"];
+            popularBrandsGrid.innerHTML = brands.map(brand => `
+                <div class="brand-card p-2 flex items-center justi                                        fy-center card rounded-md cursor-pointer transition-all duration-200 hover:shadow-lg hover:-translate-y-1" data-brand="${brand}">
+                    <img src="https://logo.clearbit.com/${brand.toLowerCase().replace(' ','-')}.com" alt="${brand}" class="h-8 w-auto object-contain" onerror="this.outerHTML='<span class=\\'font-semibold text-sm\\'>${brand}</span>'">
+                </div>
+            `).join('');
+        };
+        
+        const setupModalIcons = () => {
+            document.getElementById('google-icon').innerHTML = icons.google;
+            document.getElementById('facebook-icon').innerHTML = icons.facebook;
+            document.querySelectorAll('.password-toggle .eye-open').forEach(el => el.innerHTML = icons.eyeOpen);
+            document.querySelectorAll('.password-toggle .eye-closed').forEach(el => el.innerHTML = icons.eyeClosed);
+        };
+
+        const toggleFavorite = (listingId) => {
+            if (!state.currentUser) {
+                openModal(loginModal);
+                return;
+            }
+            const index = state.favorites.indexOf(listingId);
+            if (index === -1) {
+                state.favorites.push(listingId);
+            } else {
+                state.favorites.splice(index, 1);
+            }
+            saveFavorites(state.favorites);
+            renderListings(); // This will re-render cards with updated favorite status
+        };
+        
+        const renderMyAccountPage = () => {
+            if (!state.currentUser) return;
+
+            // Render My Listings
+            const mylistings = state.listings.filter(l => l.sellerEmail === state.currentUser.email);
+            if (mylistings.length > 0) {
+                myLisingsTabContent.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">${mylistings.map(l => `
+                    <div class="card rounded-md overflow-hidden">
+                         <img src="${(l.imageUrls && l.imageUrls[0]) || 'https://placehold.co/600x400/27272a/fafafa?text=AutoBazar'}" alt="${l.make} ${l.model}" class="w-full h-40 object-cover">
+                         <div class="p-4">
+                             <h3 class="font-bold truncate">${l.make} ${l.model}</h3>
+                             <p class="text-lg font-semibold">${formatPrice(l.priceUah)}</p>
+                             <div class="flex gap-2 mt-4">
+                                <button class="edit-listing-btn btn-secondary w-full h-9 rounded-md text-sm" data-id="${l.id}">${t('edit_listing_title')}</button>
+                                <button class="delete-listing-btn btn-secondary w-full h-9 rounded-md text-sm bg-red-500/10 text-red-500 border-red-500/20 hover:bg-red-500/20" data-id="${l.id}">${t('delete_listing')}</button>
+                             </div>
+                         </div>
+                    </div>
+                `).join('')}</div>`;
+            } else {
+                myLisingsTabContent.innerHTML = `<div class="text-center py-16 card rounded-md">
+                    <h3 class="text-xl font-semibold" data-translate-key="no_my_listings">${t('no_my_listings')}</h3>
+                    <p class="text-muted-foreground mt-2" data-translate-key="no_my_listings_desc">${t('no_my_listings_desc')}</p>
+                    <button class="add-first-listing-btn nav-link btn-primary rounded-md h-10 px-6 text-sm font-medium mt-4" data-page="add" data-translate-key="add_first_listing">${t('add_first_listing')}</button>
+                </div>`;
+            }
+
+            // Render Favorites
+            const favoriteListings = state.listings.filter(l => state.favorites.includes(l.id));
+             const cardHtml = (listing) => {
+                 const isFavorited = state.favorites.includes(listing.id);
+                 return `
+                    <div class="card rounded-md overflow-hidden transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-1.5 border border-transparent hover:border-primary/20 relative" data-id="${listing.id}">
+                        <button class="favorite-btn absolute top-2 right-2 z-10 p-2 rounded-full bg-background/70 backdrop-blur-sm transition-colors hover:bg-background ${isFavorited ? 'favorited' : ''}" data-id="${listing.id}">${icons.favorite}</button>
+                        <div class="cursor-pointer listing-card-main">
+                            <img src="${(listing.imageUrls && listing.imageUrls[0]) || 'https://placehold.co/600x400/27272a/fafafa?text=AutoBazar'}" alt="${listing.make} ${listing.model}" class="w-full h-48 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-bold text-lg truncate">${listing.make} ${listing.model}</h3>
+                                <p class="text-xl font-semibold text-primary/90 my-1">${formatPrice(listing.priceUah)}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (favoriteListings.length > 0) {
+                myFavoritesTabContent.innerHTML = `<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">${favoriteListings.map(cardHtml).join('')}</div>`;
+            } else {
+                 myFavoritesTabContent.innerHTML = `<div class="text-center py-16 card rounded-md">
+                    <h3 class="text-xl font-semibold" data-translate-key="no_favorites">${t('no_favorites')}</h3>
+                    <p class="text-muted-foreground mt-2" data-translate-key="no_favorites_desc">${t('no_favorites_desc')}</p>
+                    <button class="nav-link btn-primary rounded-md h-10 px-6 text-sm font-medium mt-4" data-page="home" data-translate-key="go_to_main">${t('go_to_main')}</button>
+                </div>`;
+            }
+             // Re-attach listener for nav link inside empty state
+             document.querySelectorAll('#account-page .nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showPage(e.currentTarget.dataset.page);
+                });
+            });
+        };
+        
+        const resetAndPrepareForm = (isEdit = false) => {
+            addListingForm.reset();
+            document.getElementById('form-edit-id').value = '';
+            const titleEl = document.getElementById('add-edit-title');
+            const submitBtn = document.getElementById('form-submit-btn').querySelector('span');
+
+            if (isEdit) {
+                titleEl.textContent = t('edit_listing_title');
+                submitBtn.textContent = t('save_changes');
+            } else {
+                titleEl.textContent = t('new_listing_title');
+                submitBtn.textContent = t('submit_listing');
+            }
+        };
+
+        const startEditListing = (listingId) => {
+            const listing = state.listings.find(l => l.id === listingId);
+            if (!listing) return;
+            
+            resetAndPrepareForm(true);
+
+            document.getElementById('form-edit-id').value = listing.id;
+            document.getElementById('form-make').value = listing.make;
+            populateModels(listing.make, formModel, 'select_model');
+            document.getElementById('form-model').value = listing.model;
+            document.getElementById('form-year').value = listing.year;
+            document.getElementById('form-price').value = listing.priceUah;
+            document.getElementById('form-mileage').value = listing.mileage;
+            document.getElementById('form-fuel').value = listing.fuel;
+            document.getElementById('form-transmission').value = listing.transmission;
+            document.getElementById('form-body').value = listing.body;
+            document.getElementById('form-owners').value = listing.owners;
+            document.getElementById('form-accidents').value = listing.inAccident.toString();
+            document.getElementById('form-region').value = listing.region;
+            document.getElementById('form-city').value = listing.city;
+            document.getElementById('form-vin').value = listing.vin || '';
+            
+            const imageUrls = listing.imageUrls || [];
+            document.getElementById('form-image').value = imageUrls[0] || '';
+            document.getElementById('form-gallery-images').value = imageUrls.slice(1).join(', ');
+            
+            document.getElementById('form-description').value = listing.description;
+
+            showPage('add');
+        };
+
+        const deleteListing = (listingId) => {
+            if (confirm(t('confirm_delete'))) {
+                state.listings = state.listings.filter(l => l.id !== listingId);
+                saveListings(state.listings);
+                renderMyAccountPage();
+                showToast('Оголошення видалено', true);
+            }
+        };
+
+        const showVinReport = (listing) => {
+            // This is a simulation
+            const reportHtml = `
+                <p><strong>VIN:</strong> ${listing.vin}</p>
+                <div class="mt-4 border-t border-border pt-4">
+                    <h3 class="font-semibold text-lg mb-2">Історія перевірок (симуляція)</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2"><svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> <span>Перша реєстрація в Україні: <strong>${new Date(listing.createdAt).toLocaleDateString()}</strong></span></li>
+                        <li class="flex items-center gap-2"><svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> <span>Кількість власників: <strong>${listing.owners}</strong></span></li>
+                         <li class="flex items-center gap-2">${listing.inAccident ? '<svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>' : '<svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>'} <span>Участь у ДТП: <strong>${listing.inAccident ? 'Так' : 'Ні'}</strong></span></li>
+                         <li class="flex items-center gap-2"><svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> <span>Перевірка на викрадення: <strong>Не в розшуку</strong></span></li>
+                         <li class="flex items-center gap-2"><svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg> <span>Останній зафіксований пробіг: <strong>${listing.mileage - 5} тис. км</strong> (можлива розбіжність)</span></li>
+                    </ul>
+                </div>
+            `;
+            vinReportContent.innerHTML = reportHtml;
+            openModal(vinReportModal);
+        }
+
+        const initializeAppUI = () => {
+            populateSelect(filterMake, Object.keys(carsData).sort(), 'any_make');
+            populateSelect(filterRegion, ukraineRegions.sort(), 'any_region');
+            populateSelect(formMake, Object.keys(carsData).sort(), 'select_make');
+            populateSelect(formRegion, ukraineRegions.sort(), 'select_region');
+
+            populateSelectFromObject(formFuel, fuelTypes, 'select_fuel');
+            populateSelectFromObject(formTransmission, transmissionTypes, 'select_transmission');
+            populateSelectFromObject(formBody, bodyTypes, 'select_body');
+            
+            renderPopularBrands();
+            setupModalIcons();
+
+            applyTheme();
+            updateUIText();
+            updateAuthUI();
+            languageSwitcher.value = state.language;
+            currencySwitcher.value = state.currency;
+        };
+        
+        // --- ANIMATIONS ---
+        const animateOnScrollObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    
+                    if(entry.target.id === 'stats-section') {
+                        const counters = entry.target.querySelectorAll('.stat-counter');
+                        counters.forEach(counter => {
+                            const target = +counter.getAttribute('data-target');
+                            const duration = 1500;
+                            const stepTime = 20;
+                            let current = 0;
+                            const increment = target / (duration / stepTime);
+                            const timer = setInterval(() => {
+                                current += increment;
+                                if(current >= target) {
+                                    current = target;
+                                    clearInterval(timer);
+                                }
+                                counter.innerText = Math.floor(current).toLocaleString('uk-UA');
+                            }, stepTime);
+                        });
+                    }
+                    
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // --- EVENT LISTENERS ---
+        themeToggle.addEventListener('click', () => {
+            state.theme = state.theme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('theme', state.theme);
+            applyTheme();
         });
-        window.scrollTo(0, 0);
-    }
-
-    document.querySelectorAll('[data-nav]').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const pageId = link.dataset.nav;
-            const scrollToId = link.dataset.scrollTo;
-            
-            showPage(pageId);
-            
-            if (pageId === 'home' && scrollToId) {
-                setTimeout(() => {
-                    document.getElementById(scrollToId)?.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-            } else if (pageId === 'profile') {
-                renderProfilePage();
-            } else if (pageId === 'catalog') {
-                renderCarGrid(allCars, 'catalog-cars-grid');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                mainHeader.classList.add('scrolled');
+                backToTopBtn.classList.remove('opacity-0', 'translate-y-10');
+            } else {
+                mainHeader.classList.remove('scrolled');
+                backToTopBtn.classList.add('opacity-0', 'translate-y-10');
             }
         });
-    });
-
-    function populateSelects() {
-        const regionSelect = document.getElementById('search-region-select');
-        regions.forEach(region => {
-            const option = document.createElement('option');
-            option.value = region;
-            option.textContent = `${region} обл.`;
-            regionSelect.appendChild(option);
+        
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo(0,0);
         });
-        carBrands.sort().forEach(brand => {
-            const option = document.createElement('option');
-            option.value = brand;
-            option.textContent = brand;
-            searchBrandSelect.appendChild(option);
-        });
-    }
 
-    searchBrandSelect.addEventListener('change', (e) => {
-        const selectedBrand = e.target.value;
-        searchModelSelect.innerHTML = `<option value="">${translations[currentLang].search_model_select}</option>`;
-        if (selectedBrand && carModels[selectedBrand]) {
-            searchModelSelect.disabled = false;
-            carModels[selectedBrand].forEach(model => {
-                const option = document.createElement('option');
-                option.value = model;
-                option.textContent = model;
-                searchModelSelect.appendChild(option);
+        languageSwitcher.addEventListener('change', (e) => {
+            state.language = e.target.value;
+            localStorage.setItem('language', state.language);
+            updateUIText();
+            initializeAppUI();
+            document.querySelector('#form-accidents option[value="false"]').textContent = t('option_no_accidents');
+            document.querySelector('#form-accidents option[value="true"]').textContent = t('option_accidents');
+        });
+
+        currencySwitcher.addEventListener('change', (e) => {
+            state.currency = e.target.value;
+            localStorage.setItem('currency', state.currency);
+            renderListings();
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                showPage(e.currentTarget.dataset.page);
             });
-        } else {
-            searchModelSelect.disabled = true;
-            searchModelSelect.innerHTML = `<option value="">${translations[currentLang].search_model_disabled}</option>`;
-        }
-    });
+        });
 
-    function formatPrice(amount, currency) {
-        const price = amount * exchangeRates[currency];
-        const symbol = currencySymbols[currency];
-        const formattedPrice = new Intl.NumberFormat('en-US').format(price.toFixed(0));
-        return currency === 'UAH' ? `${formattedPrice} ${symbol}` : `${symbol}${formattedPrice}`;
-    }
+        filterMake.addEventListener('change', (e) => {
+            state.filters.make = e.target.value;
+            state.filters.model = '';
+            state.currentPage = 1;
+            populateModels(state.filters.make, filterModel, 'any_model');
+            renderListings();
+        });
 
-    function renderCarGrid(carsToRender, gridId) {
-        const grid = document.getElementById(gridId);
-        if (!grid) return;
+        filterModel.addEventListener('change', (e) => {
+            state.filters.model = e.target.value;
+            state.currentPage = 1;
+            renderListings();
+        });
 
-        if (carsToRender.length === 0) {
-            grid.innerHTML = `<p class="text-secondary text-center col-span-full">${translations[currentLang].no_results}</p>`;
-            return;
-        }
+        filterRegion.addEventListener('change', (e) => {
+            state.filters.region = e.target.value;
+            state.currentPage = 1;
+            renderListings();
+        });
+        
+        sortBy.addEventListener('change', (e) => {
+            state.filters.sortBy = e.target.value;
+            state.currentPage = 1;
+            renderListings();
+        });
+        
+        resetFiltersBtn.addEventListener('click', () => {
+            state.filters = { make: '', model: '', region: '', sortBy: 'newest' };
+            filterMake.value = '';
+            filterModel.value = '';
+            filterRegion.value = '';
+            sortBy.value = 'newest';
+            filterModel.disabled = true;
+            populateModels('', filterModel, 'any_model');
+            renderListings();
+        });
 
-        grid.innerHTML = carsToRender.map(car => `
-            <div class="card-bg rounded-2xl overflow-hidden flex flex-col">
-                <div class="relative">
-                    <img class="w-full h-60 object-cover" src="${car.image}" alt="${car.name}">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    ${car.verified ? `<div class="absolute top-4 right-4 verified-badge text-xs font-bold px-3 py-1.5 rounded-full flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 18.5a11.954 11.954 0 007.834-13.501a1.5 1.5 0 00-1.07-1.07A11.954 11.954 0 0010 1.5a11.954 11.954 0 00-7.834 3.499a1.5 1.5 0 00-1.07 1.07zM12.93 7.07a1 1 0 00-1.414-1.414L9 8.172l-1.515-1.515a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg><span data-key="card_verified">${translations[currentLang].card_verified}</span></div>` : ''}
-                     <div class="absolute bottom-4 left-5">
-                         <h3 class="text-white text-2xl font-bold">${car.name}</h3>
-                         <p class="text-gray-300 font-medium">${car.year}</p>
-                     </div>
-                </div>
-                <div class="p-5 flex flex-col flex-grow">
-                    <p class="text-accent text-3xl font-black mb-4 price" data-price-usd="${car.priceUSD}">${formatPrice(car.priceUSD, currentCurrency)}</p>
-                    <div class="text-secondary text-sm grid grid-cols-2 gap-y-3 gap-x-2 mb-5">
-                        ${Object.entries(car.specs).map(([key, value]) => `
-                            <div class="flex items-center gap-2 overflow-hidden">
-                                <span class="flex-shrink-0">${specIcons[key] || ''}</span>
-                                <span class="truncate">${value}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div class="mt-auto"><button class="w-full btn-primary text-white font-bold py-3 px-4 rounded-lg" data-key="card_details">${translations[currentLang].card_details}</button></div>
-                </div>
-            </div>
-        `).join('');
-    }
+        formMake.addEventListener('change', (e) => {
+            populateModels(e.target.value, formModel, 'select_model');
+        });
+        
+        popularBrandsGrid.addEventListener('click', (e) => {
+            const brandCard = e.target.closest('.brand-card');
+            if (brandCard) {
+                const brand = brandCard.dataset.brand;
+                filterMake.value = brand;
+                state.filters.make = brand;
+                populateModels(brand, filterModel, 'any_model');
+                renderListings();
+                listingsGrid.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
 
-    function renderHomePageContent() {
-        renderCarGrid(allCars.slice(0, 8), 'featured-cars-grid');
-        const auctionGrid = document.getElementById('auction-grid');
-        auctionGrid.innerHTML = auctionCars.map(car => `
-            <div id="auction-car-${car.id}" class="card-bg rounded-2xl overflow-hidden flex flex-col">
-                <img class="w-full h-60 object-cover" src="${car.image}" alt="${car.name}">
-                <div class="p-5 flex flex-col flex-grow">
-                    <h3 class="text-primary text-xl font-bold mb-2">${car.name} ${car.year}</h3>
-                    <div class="mb-4"><p class="text-secondary text-sm" data-key="bid_current">${translations[currentLang].bid_current}</p><p class="text-accent text-3xl font-black current-bid price" data-price-usd="${car.currentBidUSD}">${formatPrice(car.currentBidUSD, currentCurrency)}</p></div>
-                    <div class="timer rounded-lg text-center p-2 mb-4"><p class="font-bold text-lg countdown" data-timeleft="${car.timeLeft}">--:--:--</p></div>
-                    <div class="mt-auto"><button class="w-full btn-primary text-white font-bold py-3 px-4 rounded-lg bid-btn" data-id="${car.id}" data-key="bid_title">${translations[currentLang].bid_title}</button></div>
-                </div>
-            </div>
-        `).join('');
-        const regionsGrid = document.getElementById('regions-grid');
-        regionsGrid.innerHTML = regions.map(region => `<a href="#" class="card-bg p-4 rounded-lg text-center text-primary font-semibold hover\:bg-accent hover:text-primary transition-all duration-300 text-lg">${region}</a>`).join('');
-        addBidButtonListeners();
-        updateTimers();
-    }
-    
-    function renderProfilePage() {
-        if (!loggedInUser) {
+        addListingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const galleryUrls = document.getElementById('form-gallery-images').value.split(',').map(url => url.trim()).filter(url => url);
+            const imageUrls = [document.getElementById('form-image').value.trim(), ...galleryUrls].filter(url => url);
+            
+            const editingId = document.getElementById('form-edit-id').value;
+
+            const listingData = {
+                sellerEmail: state.currentUser.email,
+                make: document.getElementById('form-make').value,
+                model: document.getElementById('form-model').value,
+                year: parseInt(document.getElementById('form-year').value),
+                priceUah: parseFloat(document.getElementById('form-price').value),
+                region: document.getElementById('form-region').value,
+                city: document.getElementById('form-city').value,
+                vin: document.getElementById('form-vin').value,
+                imageUrls: imageUrls.length > 0 ? imageUrls : ['https://placehold.co/600x400/27272a/fafafa?text=AutoBazar'],
+                description: document.getElementById('form-description').value,
+                mileage: parseInt(document.getElementById('form-mileage').value),
+                fuel: document.getElementById('form-fuel').value,
+                transmission: document.getElementById('form-transmission').value,
+                body: document.getElementById('form-body').value,
+                owners: parseInt(document.getElementById('form-owners').value),
+                inAccident: document.getElementById('form-accidents').value === 'true',
+            };
+
+            if (editingId) {
+                // Update existing listing
+                const index = state.listings.findIndex(l => l.id === editingId);
+                if (index !== -1) {
+                    state.listings[index] = { ...state.listings[index], ...listingData };
+                }
+                 showToast('Оголошення успішно оновлено!', true);
+            } else {
+                 // Create new listing
+                const newListing = {
+                    ...listingData,
+                    id: crypto.randomUUID(),
+                    createdAt: new Date()
+                };
+                state.listings.unshift(newListing);
+                showToast('listing_added');
+            }
+            
+            saveListings(state.listings);
+            renderListings();
+            addListingForm.reset();
+            document.getElementById('form-edit-id').value = '';
             showPage('home');
-            loginModal.style.display = 'flex';
-            return;
-        }
-        document.getElementById('profile-name').textContent = loggedInUser.name;
-        document.getElementById('profile-email').textContent = loggedInUser.email;
-        const myCars = allCars.filter(car => car.owner === loggedInUser.email);
-        renderCarGrid(myCars, 'my-ads-grid');
-        applyLanguage(currentLang, false);
-        applyCurrency(currentCurrency);
-    }
-    
-    // --- ПОИСК И ФИЛЬТРЫ ---
-    function applyFilters() {
-        const selectedRegion = document.getElementById('search-region-select').value;
-        const selectedBrand = document.getElementById('search-brand-select').value;
-        const selectedModel = document.getElementById('search-model-select').value;
-        
-        const priceFrom = parseFloat(document.getElementById('price-from').value) || 0;
-        const priceTo = parseFloat(document.getElementById('price-to').value) || Infinity;
-        const yearFrom = parseInt(document.getElementById('year-from').value) || 0;
-        const yearTo = parseInt(document.getElementById('year-to').value) || Infinity;
-
-        const filteredCars = allCars.filter(car => {
-            const regionMatch = !selectedRegion || car.region === selectedRegion;
-            const brandMatch = !selectedBrand || car.brand === selectedBrand;
-            const modelMatch = !selectedModel || car.model === selectedModel;
-            const priceMatch = car.priceUSD >= priceFrom && car.priceUSD <= priceTo;
-            const yearMatch = car.year >= yearFrom && car.year <= yearTo;
-            return regionMatch && brandMatch && modelMatch && priceMatch && yearMatch;
         });
         
-        showPage('catalog');
-        renderCarGrid(filteredCars, 'catalog-cars-grid');
-        applyLanguage(currentLang, false);
-        applyCurrency(currentCurrency);
-    }
+        [listingsGrid, featuredListingsGrid].forEach(grid => {
+             grid.addEventListener('click', (e) => {
+                const card = e.target.closest('.card');
+                const favoriteBtn = e.target.closest('.favorite-btn');
 
-    document.getElementById('search-button').addEventListener('click', applyFilters);
-    document.getElementById('apply-filters-btn').addEventListener('click', applyFilters);
-    
-    // --- ИНТЕРАКТИВНОСТЬ ---
-    function applyTheme(theme) { document.documentElement.setAttribute('data-theme', theme); document.getElementById('theme-icon-dark').classList.toggle('hidden', theme === 'light'); document.getElementById('theme-icon-light').classList.toggle('hidden', theme === 'dark'); localStorage.setItem('theme', theme); currentTheme = theme; }
-    document.getElementById('themeSwitcher').addEventListener('click', () => applyTheme(currentTheme === 'dark' ? 'light' : 'dark'));
+                if (favoriteBtn) {
+                     e.stopPropagation();
+                     toggleFavorite(favoriteBtn.dataset.id);
+                     return;
+                }
 
-    function applyLanguage(lang, fullReRender = true) {
-        currentLang = lang; localStorage.setItem('language', lang); document.documentElement.lang = lang;
-        document.querySelectorAll('[data-key]').forEach(el => { const key = el.dataset.key; if (translations[lang][key]) { el.textContent = translations[lang][key]; } });
-        document.querySelectorAll('[data-key-placeholder]').forEach(el => { const key = el.dataset.keyPlaceholder; if (translations[lang][key]) { el.placeholder = translations[lang][key]; } });
-        const selectedBrand = searchBrandSelect.value;
-        searchModelSelect.querySelector('option[value=""]').textContent = selectedBrand ? translations[currentLang].search_model_select : translations[currentLang].search_model_disabled;
-        if (fullReRender) { renderHomePageContent(); renderCarGrid(allCars, 'catalog-cars-grid'); if (loggedInUser) renderProfilePage(); }
-    }
-    document.getElementById('languageSwitcher').addEventListener('change', (e) => applyLanguage(e.target.value));
-
-    function applyCurrency(currency) {
-        currentCurrency = currency; localStorage.setItem('currency', currency);
-        document.querySelectorAll('.price').forEach(el => { const priceUSD = parseFloat(el.dataset.priceUsd); el.textContent = formatPrice(priceUSD, currency); });
-    }
-    document.getElementById('currencySwitcher').addEventListener('change', (e) => applyCurrency(e.target.value));
-
-    function initialize() {
-        applyTheme(currentTheme); languageSwitcher.value = currentLang; currencySwitcher.value = currentCurrency;
-        populateSelects();
-        renderHomePageContent();
-        renderCarGrid(allCars, 'catalog-cars-grid');
-        applyLanguage(currentLang, false);
-        applyCurrency(currentCurrency);
-    }
-    initialize();
-    
-    // --- ЛОГИКА МОДАЛЬНЫХ ОКОН ---
-    const loginModal = document.getElementById('loginModal'), bidModal = document.getElementById('bidModal'), sellModal = document.getElementById('sellModal'), loginBtn = document.getElementById('loginBtn'), userProfile = document.getElementById('userProfile');
-    loginBtn.addEventListener('click', () => loginModal.style.display = 'flex');
-    document.getElementById('closeLoginModal').addEventListener('click', () => loginModal.style.display = 'none');
-    document.getElementById('closeBidModal').addEventListener('click', () => bidModal.style.display = 'none');
-    document.getElementById('closeSellModal').addEventListener('click', () => sellModal.style.display = 'none');
-    document.getElementById('sell-nav-link').addEventListener('click', (e) => { e.preventDefault(); sellModal.style.display = 'flex'; });
-    window.addEventListener('click', (e) => { if (e.target === loginModal) loginModal.style.display = 'none'; if (e.target === bidModal) bidModal.style.display = 'none'; if(e.target === sellModal) sellModal.style.display = 'none';});
-
-    document.getElementById('loginForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = document.getElementById('email').value;
-        loggedInUser = { email: email, name: email.split('@')[0] };
-        document.getElementById('usernameDisplay').textContent = loggedInUser.name;
-        loginBtn.classList.add('hidden'); userProfile.classList.remove('hidden'); userProfile.classList.add('flex');
-        loginModal.style.display = 'none';
-        document.getElementById('email').value = '';
-        document.getElementById('password').value = '';
-    });
-    
-    document.getElementById('logout-btn').addEventListener('click', () => {
-        loggedInUser = null;
-        userProfile.classList.add('hidden');
-        userProfile.classList.remove('flex');
-        loginBtn.classList.remove('hidden');
-        showPage('home');
-    });
-    
-    let activeAuctionCarId = null;
-    function addBidButtonListeners() {
-        document.querySelectorAll('.bid-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (!loggedInUser) { loginModal.style.display = 'flex'; return; }
-                activeAuctionCarId = btn.dataset.id;
-                const car = auctionCars.find(c => c.id == activeAuctionCarId);
-                if (car) {
-                    document.getElementById('bidCarName').textContent = `${car.name} ${car.year}`;
-                    document.getElementById('currentBid').textContent = formatPrice(car.currentBidUSD, currentCurrency);
-                    document.getElementById('bidAmount').value = '';
-                    bidModal.style.display = 'flex';
+                if (card && card.dataset.id) {
+                    const mainPart = e.target.closest('.listing-card-main');
+                    if(mainPart){
+                        openDetailsModal(card.dataset.id);
+                    }
                 }
             });
         });
-    }
+       
 
-    document.getElementById('bidForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const newBidUSD = parseFloat(document.getElementById('bidAmount').value) / exchangeRates[currentCurrency];
-        const carIndex = auctionCars.findIndex(c => c.id == activeAuctionCarId);
-        if (carIndex !== -1 && newBidUSD > auctionCars[carIndex].currentBidUSD) {
-            auctionCars[carIndex].currentBidUSD = newBidUSD;
-            renderHomePageContent();
-            bidModal.style.display = 'none';
-        } else { alert(translations[currentLang].bid_alert); }
-    });
-
-    function updateTimers() {
-        document.querySelectorAll('.countdown').forEach(countdown => {
-            let timeLeft = parseInt(countdown.dataset.timeleft, 10);
-            if(isNaN(timeLeft)) return;
-            const intervalId = setInterval(() => {
-                if (timeLeft > 0) {
-                    timeLeft--; countdown.dataset.timeleft = timeLeft;
-                    const d = Math.floor(timeLeft / 86400), h = Math.floor((timeLeft % 86400) / 3600), m = Math.floor((timeLeft % 3600) / 60), s = timeLeft % 60;
-                    countdown.textContent = d > 0 ? `${d}д ${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}` : `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-                } else {
-                    countdown.textContent = translations[currentLang].auction_ended;
-                    countdown.closest('.card-bg').querySelector('.bid-btn').disabled = true;
-                    clearInterval(intervalId);
-                }
-            }, 1000);
+        detailsModal.addEventListener('click', (e) => {
+            if (e.target === detailsModal) {
+                closeDetailsModal();
+            }
         });
-    }
 
-});
-</script>
+        vinReportModal.addEventListener('click', (e) => {
+            if (e.target === vinReportModal) {
+                closeModal(vinReportModal);
+            }
+        });
+        
+        // --- AUTH & MODAL LISTENERS ---
+        loginBtn.addEventListener('click', () => openModal(loginModal));
+        registerBtn.addEventListener('click', () => openModal(registerModal));
+        logoutBtn.addEventListener('click', logoutUser);
 
+        closeModalBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const modal = e.target.closest('.fixed');
+                if (modal) closeModal(modal);
+            });
+        });
+        
+        showRegisterModalLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeModal(loginModal);
+            openModal(registerModal);
+        });
+
+        showLoginModalLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeModal(registerModal);
+            openModal(loginModal);
+        });
+
+        document.querySelectorAll('.password-toggle').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const input = btn.previousElementSibling;
+                const eyeOpen = btn.querySelector('.eye-open');
+                const eyeClosed = btn.querySelector('.eye-closed');
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    eyeOpen.classList.add('hidden');
+                    eyeClosed.classList.remove('hidden');
+                } else {
+                    input.type = 'password';
+                    eyeOpen.classList.remove('hidden');
+                    eyeClosed.classList.add('hidden');
+                }
+            });
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = loginForm['login-email'].value;
+            const password = loginForm['login-password'].value;
+            const user = loginUser(email, password);
+            if(user) {
+                state.currentUser = user;
+                sessionStorage.setItem('currentUser', JSON.stringify(user));
+                loginForm.reset();
+                loginError.classList.add('hidden');
+                closeModal(loginModal);
+                updateAuthUI();
+            } else {
+                loginError.textContent = t('login_error');
+                loginError.classList.remove('hidden');
+            }
+        });
+        
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = registerForm['register-name'].value;
+            const email = registerForm['register-email'].value;
+            const password = registerForm['register-password'].value;
+            const newUser = registerUser(email, password, name);
+            if(newUser) {
+                registerForm.reset();
+                registerError.classList.add('hidden');
+                closeModal(registerModal);
+                state.currentUser = newUser;
+                sessionStorage.setItem('currentUser', JSON.stringify(newUser));
+                updateAuthUI();
+            } else {
+                registerError.textContent = t('register_error');
+                registerError.classList.remove('hidden');
+            }
+        });
+        
+        paginationControls.addEventListener('click', (e) => {
+            const pageBtn = e.target.closest('.page-btn');
+            if (pageBtn) {
+                state.currentPage = parseInt(pageBtn.dataset.page);
+                renderListings();
+                window.scrollTo(0, listingsGrid.offsetTop - 100);
+            }
+        });
+
+        // --- MY ACCOUNT PAGE ---
+        accountTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.dataset.tab;
+                
+                accountTabs.forEach(t => t.classList.remove('border-primary', 'text-primary'));
+                accountTabs.forEach(t => t.classList.add('border-transparent', 'text-muted-foreground', 'hover:text-foreground', 'hover:border-border'));
+                
+                tab.classList.add('border-primary', 'text-primary');
+                tab.classList.remove('border-transparent', 'text-muted-foreground');
+                
+                accountTabContents.forEach(content => content.classList.add('hidden'));
+                document.getElementById(`${tabId}-tab-content`).classList.remove('hidden');
+            });
+        });
+
+        document.getElementById('account-page').addEventListener('click', (e) => {
+            // Handling buttons inside my-listings-tab-content
+            const editBtn = e.target.closest('.edit-listing-btn');
+            const deleteBtn = e.target.closest('.delete-listing-btn');
+            const addBtn = e.target.closest('.add-first-listing-btn');
+            
+            if (editBtn) {
+                startEditListing(editBtn.dataset.id);
+            }
+            if (deleteBtn) {
+                deleteListing(deleteBtn.dataset.id);
+            }
+            if(addBtn){
+                showPage('add');
+            }
+
+            // Handling clicks inside my-favorites-tab-content
+            const mainPart = e.target.closest('.listing-card-main');
+            if(mainPart){
+               const card = mainPart.closest('.card');
+               if(card) openDetailsModal(card.dataset.id);
+            }
+            const favBtn = e.target.closest('.favorite-btn');
+            if(favBtn){
+               toggleFavorite(favBtn.dataset.id);
+               // Re-render only if we are on the account page
+               if(document.getElementById('account-page').classList.contains('hidden') === false){
+                    renderMyAccountPage();
+               }
+            }
+        });
+        
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            seedInitialData();
+            initializeAppUI();
+            renderListings();
+
+            const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
+            elementsToAnimate.forEach(el => {
+                animateOnScrollObserver.observe(el);
+            });
+        });
+
+    </script>
 </body>
 </html>
 
